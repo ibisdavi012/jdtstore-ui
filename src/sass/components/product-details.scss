@@ -1,0 +1,12 @@
+.product__details {
+  font-size: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 80%;
+
+  div {
+    padding: 0.2rem 0;
+  }
+}
