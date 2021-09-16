@@ -1,16 +1,20 @@
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import ProductListPage from "./pages/ProductListPage";
 import AddProductPage from "./pages/AddProductPage";
+import ErrorPage from "./pages/ErrorPage";
 
 function App() {
   return (
     <Router>
       <Switch>
-        <Route path="/add-product">
+        <Route exact path="/add-product">
           <AddProductPage />
         </Route>
-        <Route path="/">
+        <Route exact path="/">
           <ProductListPage />
+        </Route>
+        <Route path="*">
+          <ErrorPage error={404} />
         </Route>
       </Switch>
     </Router>

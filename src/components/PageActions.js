@@ -5,7 +5,7 @@ import "../sass/components/page-actions.scss";
 export default function PageActions() {
   return (
     <div className="page-actions">
-      <Link to="/add">
+      <Link to="/add-product">
         <button id="add-product-btn">+ Add</button>
       </Link>
       <button id="delete-product-btn">R Mass Delete</button>
