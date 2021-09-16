@@ -1,16 +1,18 @@
 import PageActions from "./PageActions";
 import "../sass/components/header.scss";
 
-function Header() {
+function Header(props) {
   return (
     <header>
       <div className="header__content">
-        <div className="page-title">Product List</div>
+        <div className="page-title">{props.title}</div>
         <PageActions />
       </div>
       <hr />
     </header>
   );
 }
+
+Header.defaultProps = { title: "Page Title" };
 
 export default Header;

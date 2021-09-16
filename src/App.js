@@ -1,28 +1,18 @@
-import { Fragment } from "react";
-import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
-import Header from "./components/Header";
-import ProductGrid from "./components/ProductGrid";
-import Footer from "./components/Footer";
-
-function Add() {
-  return <p>Add New</p>;
-}
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import ProductListPage from "./pages/ProductListPage";
+import AddProductPage from "./pages/AddProductPage";
 
 function App() {
   return (
     <Router>
-      <Header />
-      <main>
-        <Switch>
-          <Route path="/add">
-            <h2>Adding Form</h2>
-          </Route>
-          <Route path="/">
-            <ProductGrid />
-          </Route>
-        </Switch>
-      </main>
-      <Footer />
+      <Switch>
+        <Route path="/add-product">
+          <AddProductPage />
+        </Route>
+        <Route path="/">
+          <ProductListPage />
+        </Route>
+      </Switch>
     </Router>
   );
 }
