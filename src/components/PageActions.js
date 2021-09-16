@@ -1,14 +1,15 @@
-import { Link } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import AddProductActions from "./AddProductActions";
+import EditProductActions from "./EditProductActions";
 
 import "../sass/components/page-actions.scss";
 
 export default function PageActions() {
+  const location = useLocation();
   return (
     <div className="page-actions">
-      <Link to="/add-product">
-        <button id="add-product-btn">+ Add</button>
-      </Link>
-      <button id="delete-product-btn">R Mass Delete</button>
+      {location.pathname === "/" && <AddProductActions />}
+      {location.pathname === "/add-product" && <EditProductActions />}
     </div>
   );
 }
