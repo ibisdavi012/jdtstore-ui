@@ -5,7 +5,7 @@ export default function Page({ children, title }) {
   return (
     <>
       <Header title={title} />
-      {children}
+      <main>{children}</main>
       <Footer />
     </>
   );

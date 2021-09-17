@@ -18,7 +18,9 @@ function Error({ title, message }) {
     <div className="error-container">
       <h1 className="error-title">{title}</h1>
       <p className="error-message">{message} </p>
-      <Link to="/">Go to Home Page</Link>
+      <Link to="/">
+        <button>Go to Home Page</button>
+      </Link>
     </div>
   );
 }
