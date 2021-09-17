@@ -1,83 +1,46 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 
 import "../sass/components/add-product-form.scss";
 
 export default function AddProductForm() {
-  const [productType, setProductType] = useState(1);
+  const [productType, setProductType] = useState("Dvd");
 
   const productTypeChanged = (e) => {
-    setProductType(parseInt(e.target.value || 1));
+    setProductType(e.target.value || "Dvd");
   };
 
-  const bookFields = () => {
-    return (
-      <div className="form-group">
-        <label>Wight (Kg)</label>
-        <input id="weight" type="text" placeholder="Enter product weight" />
-      </div>
-    );
-  };
+  const formStatus = useSelector((state) => state.addProduct.formStatus);
 
-  const furnitureFields = () => {
-    return (
-      <>
-        <div className="form-group">
-          <label>Height (Cm)</label>
-          <input id="height" type="text" placeholder="Enter height" />
-        </div>
-        <div className="form-group">
-          <label>Width (Cm)</label>
-          <input id="width" type="text" placeholder="Enter width" />
-        </div>
-        <div className="form-group">
-          <label>Length (Cm)</label>
-          <input id="length" type="text" placeholder="Enter length" />
-        </div>
-      </>
-    );
-  };
-
-  const dvdFields = () => {
-    return (
-      <div className="form-group">
-        <label>Size (MM)</label>
-        <input id="size" type="text" placeholder="Enter size in Mb" />
-      </div>
-    );
-  };
-
-  const SpecificFields = () => {
-    let specificFields;
-    switch (productType) {
-      case 1:
-        specificFields = dvdFields();
-        break;
-      case 2:
-        specificFields = bookFields();
-        break;
-      case 3:
-        specificFields = furnitureFields();
-        break;
-      default:
-        break;
-    }
-    return specificFields;
-  };
+  useEffect(() => {
+    setTimeout(() => {
+      [...document.getElementsByClassName("dynamic-field")].forEach(
+        (hiddenField) => {
+          hiddenField.style.display = hiddenField.classList.contains("hidden")
+            ? "none"
+            : "block";
+        }
+      );
+    }, 500);
+  }, [productType]);
 
   return (
-    <form id="product_form" autocomplete="off">
+    <form id="product_form" autoComplete="off">
       <div className="form-group">
         <label>SKU</label>
-        <input id="sku" type="text" placeholder="Enter product SKU" />
+        <input id="sku" type="text" placeholder="product's SKU" />
       </div>
+
       <div className="form-group">
         <label>Name</label>
-        <input id="name" type="text" placeholder="Enter product name" />
+        <input id="name" type="text" placeholder="product's name" />
       </div>
+
       <div className="form-group">
-        <label>Price ($)</label>
-        <input id="price" type="text" placeholder="Enter product price" />
+        <label>Price($)</label>
+        <input id="price" type="text" placeholder="product's price" />
       </div>
+
       <div className="form-group">
         <label>Type Switcher</label>
         <select
@@ -87,18 +50,51 @@ export default function AddProductForm() {
           }}
           value={productType}
         >
-          <option id="DVD" value="1">
+          <option id="DVD" value="Dvd">
             DVD
           </option>
-          <option id="Book" value="2">
+          <option id="Book" value="Book">
             Book
           </option>
-          <option id="Furniture" value="3">
+          <option id="Furniture" value="Furniture">
             Furniture
           </option>
         </select>
       </div>
-      <SpecificFields />
+      <div
+        className={`form-group dynamic-field ${
+          productType !== "Dvd" ? "hidden" : "visible"
+        }`}
+      >
+        <label>Size (Mb)</label>
+        <input id="size" type="text" placeholder="dvd's size" />
+      </div>
+      <div
+        className={`form-group dynamic-field ${
+          productType !== "Book" ? "hidden" : "visible"
+        }`}
+      >
+        <label>Weight (Kg)</label>
+        <input id="weight" type="text" placeholder="books's weight" />
+      </div>
+      <div
+        className={`dynamic-field ${
+          productType !== "Furniture" ? "hidden" : "visible"
+        }`}
+      >
+        <div className="form-group">
+          <label>Height (cm)</label>
+          <input id="height" type="text" placeholder="furniture's height" />
+        </div>
+        <div className="form-group">
+          <label>Width (cm)</label>
+          <input id="width" type="text" placeholder="furniture's width" />
+        </div>
+        <div className="form-group">
+          <label>Length($)</label>
+          <input id="length" type="text" placeholder="furniture's length" />
+        </div>
+      </div>
     </form>
   );
 }

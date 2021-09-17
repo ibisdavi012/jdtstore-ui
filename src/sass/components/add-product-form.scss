@@ -2,22 +2,49 @@
   max-width: 420px;
   margin: 4rem auto;
   position: relative;
-  opacity: 0;
-  left: -70vw;
-  animation: fade-in 0.5s ease 0.2s forwards, slide-in 0.5s ease 0.2s forwards;
+  left: -50vw;
+  animation: AddProductFormSlideIn 1s ease 0s forwards;
+
+  @keyframes AddProductFormSlideIn {
+    60% {
+      left: 10vw;
+    }
+    100% {
+      left: 0;
+    }
+  }
 
   .form-group {
     margin-bottom: 1.6rem;
+  }
 
-    /* This will fade-in the dynamic fields (product-specific ones) */
-    &:nth-child(n + 3) {
-      animation: fade-in 1s ease 0.2s forwards;
+  .hidden {
+    display: block;
+    opacity: 1;
+    animation: fadeOut 0.5s ease 0s forwards;
+  }
+
+  .visible {
+    display: block;
+    opacity: 0;
+    animation: fadeIn 0.5s ease 0.4s forwards;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0.2;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes fadeOut {
+    from {
+      opacity: 1;
+    }
+    to {
       opacity: 0;
-      @keyframes fade-in {
-        to {
-          opacity: 1;
-        }
-      }
     }
   }
 
@@ -43,13 +70,11 @@
     padding: 1.2rem;
     width: 100%;
     &:focus {
-      background-color: whitesmoke;
+      background-color: rgb(241, 240, 240);
     }
   }
 
-  @keyframes slide-in {
-    to {
-      left: 0;
-    }
+  select:focus {
+    background-color: rgb(221, 212, 212);
   }
 }
