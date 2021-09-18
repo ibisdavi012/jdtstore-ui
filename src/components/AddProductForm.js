@@ -1,21 +1,21 @@
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { reset } from "../features/add-product/addProductSlice";
-
 import { withRouter } from "react-router-dom";
+
+import { reset } from "../features/add-product/addProductSlice";
 
 import "../sass/components/add-product-form.scss";
 
 function AddProductForm(props) {
-  const [productSku, setProductSku] = useState("");
-  const [productName, setProductName] = useState("");
-  const [productPrice, setProductPrice] = useState(0);
-  const [productType, setProductType] = useState("Dvd");
-  const [productSpecifics, setProductSpecifics] = useState({});
-
-  const productTypeChanged = (e) => {
-    setProductType(e.target.value || "Dvd");
+  const initialState = {
+    sku: "",
+    name: "",
+    price: 0,
+    type: "dvd",
+    specifics: { size: 0 },
   };
+
+  const [state, setState] = useState(initialState);
 
   const formStatus = useSelector((state) => state.addProduct.formStatus);
 
@@ -39,25 +39,25 @@ function AddProductForm(props) {
       );
     }, 500);
 
-    switch (productType) {
-      case "Dvd":
-        setProductSpecifics({ size: 0 });
+    switch (state.type) {
+      case "dvd":
+        setState({ ...state, specifics: { size: 0 } });
         break;
-      case "Book":
-        setProductSpecifics({ weight: 0 });
+      case "book":
+        setState({ ...state, specifics: { weight: 0 } });
         break;
-      case "Furniture":
-        setProductSpecifics({ height: 0, width: 0, length: 0 });
+      case "furniture":
+        setState({ ...state, specifics: { height: 0, width: 0, length: 0 } });
         break;
       default:
-        setProductSpecifics({});
+        setState(initialState);
     }
 
     if (formStatus === "SAVING") {
       dispatch(reset());
       props.history.push("/");
     }
-  }, [productType, formStatus, props.history, dispatch]);
+  }, [state.type, formStatus]);
 
   return (
     <form id="product_form" autoComplete="off">
@@ -67,8 +67,8 @@ function AddProductForm(props) {
           id="sku"
           type="text"
           placeholder="product's SKU"
-          onChange={(e) => setProductSku(e.target.value)}
-          value={productSku}
+          onChange={(e) => setState({ ...state, sku: e.target.value })}
+          value={state.sku || ""}
         />
       </div>
 
@@ -79,9 +79,9 @@ function AddProductForm(props) {
           type="text"
           placeholder="product's name"
           onChange={(e) => {
-            setProductName(e.target.value);
+            setState({ ...state, name: e.target.value });
           }}
-          value={productName}
+          value={state.name || ""}
         />
       </div>
 
@@ -92,9 +92,9 @@ function AddProductForm(props) {
           type="text"
           placeholder="product's price"
           onChange={(e) => {
-            setProductPrice(e.target.value);
+            setState({ ...state, price: e.target.value });
           }}
-          value={productPrice}
+          value={state.price || ""}
         />
       </div>
 
@@ -103,24 +103,24 @@ function AddProductForm(props) {
         <select
           id="productType"
           onChange={(e) => {
-            productTypeChanged(e);
+            setState({ ...state, type: e.target.value || "dvd" });
           }}
-          value={productType}
+          value={state.type}
         >
-          <option id="DVD" value="Dvd">
+          <option id="DVD" value="dvd">
             DVD
           </option>
-          <option id="Book" value="Book">
+          <option id="Book" value="book">
             Book
           </option>
-          <option id="Furniture" value="Furniture">
+          <option id="Furniture" value="furniture">
             Furniture
           </option>
         </select>
       </div>
       <div
         className={`form-group dynamic-field ${
-          productType !== "Dvd" ? "hidden" : "visible"
+          state.type !== "dvd" ? "hidden" : "visible"
         }`}
       >
         <label>Size (Mb)</label>
@@ -129,14 +129,17 @@ function AddProductForm(props) {
           type="text"
           placeholder="dvd's size"
           onChange={(e) => {
-            setProductSpecifics({ size: e.target.value });
+            setState({
+              ...state,
+              specifics: { ...state.specifics, size: e.target.value },
+            });
           }}
-          value={productSpecifics.size || ""}
+          value={state.specifics.size || ""}
         />
       </div>
       <div
         className={`form-group dynamic-field ${
-          productType !== "Book" ? "hidden" : "visible"
+          state.type !== "book" ? "hidden" : "visible"
         }`}
       >
         <label>Weight (Kg)</label>
@@ -145,14 +148,17 @@ function AddProductForm(props) {
           type="text"
           placeholder="books's weight"
           onChange={(e) => {
-            setProductSpecifics({ weight: e.target.value });
+            setState({
+              ...state,
+              specifics: { ...state.specifics, weight: e.target.value },
+            });
           }}
-          value={productSpecifics.weight || ""}
+          value={state.specifics.weight || ""}
         />
       </div>
       <div
         className={`dynamic-field ${
-          productType !== "Furniture" ? "hidden" : "visible"
+          state.type !== "furniture" ? "hidden" : "visible"
         }`}
       >
         <div className="form-group">
@@ -162,12 +168,12 @@ function AddProductForm(props) {
             type="text"
             placeholder="furniture's height"
             onChange={(e) => {
-              setProductSpecifics({
-                ...productSpecifics,
-                height: e.target.value,
+              setState({
+                ...state,
+                specifics: { ...state.specifics, height: e.target.value },
               });
             }}
-            value={productSpecifics.height || ""}
+            value={state.specifics.height || ""}
           />
         </div>
         <div className="form-group">
@@ -177,12 +183,12 @@ function AddProductForm(props) {
             type="text"
             placeholder="furniture's width"
             onChange={(e) => {
-              setProductSpecifics({
-                ...productSpecifics,
-                width: e.target.value,
+              setState({
+                ...state,
+                specifics: { ...state.specifics, width: e.target.value },
               });
             }}
-            value={productSpecifics.width || ""}
+            value={state.specifics.width || ""}
           />
         </div>
         <div className="form-group">
@@ -192,12 +198,12 @@ function AddProductForm(props) {
             type="text"
             placeholder="furniture's length"
             onChange={(e) => {
-              setProductSpecifics({
-                ...productSpecifics,
-                length: e.target.value,
+              setState({
+                ...state,
+                specifics: { ...state.specifics, length: e.target.value },
               });
             }}
-            value={productSpecifics.length || ""}
+            value={state.specifics.length || ""}
           />
         </div>
       </div>
