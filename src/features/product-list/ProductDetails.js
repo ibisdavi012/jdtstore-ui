@@ -1,4 +1,4 @@
-import "../sass/components/product-details.scss";
+import "./product-details.scss";
 
 export default function ProductDetails() {
   return (

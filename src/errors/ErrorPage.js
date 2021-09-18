@@ -1,6 +1,7 @@
-import "../sass/pages/error-page.scss";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
+
+import "./error-page.scss";
 
 // This component can be extracted into a sepate file and has its own styles
 function PageNotFound() {

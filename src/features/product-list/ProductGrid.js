@@ -1,5 +1,5 @@
 import Product from "./Product";
-import "../sass/components/product-grid.scss";
+import "./product-grid.scss";
 
 export default function ProductGrid() {
   return (

@@ -1,5 +1,5 @@
 import ProductDetails from "./ProductDetails";
-import "../sass/components/product.scss";
+import "./product.scss";
 
 export default function Product() {
   return (

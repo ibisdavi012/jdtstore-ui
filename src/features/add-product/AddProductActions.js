@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import "../sass/components/page-actions.scss";
+import "./add-product-actions.scss";
 
 export default function AddProductActions() {
   return (

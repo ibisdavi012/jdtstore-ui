@@ -1,9 +1,9 @@
 import { useDispatch } from "react-redux";
-import { save, cancel } from "../features/add-product/addProductSlice";
+import { save, cancel } from "./addProductSlice";
 
-import "../sass/components/page-actions.scss";
+import "./save-product-actions.scss";
 
-export default function EditProductActions() {
+export default function SaveProductActions() {
   const dispatch = useDispatch();
 
   return (

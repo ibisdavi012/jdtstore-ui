@@ -2,9 +2,9 @@ import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { withRouter } from "react-router-dom";
 
-import { reset } from "../features/add-product/addProductSlice";
+import { reset } from "./addProductSlice";
 
-import "../sass/components/add-product-form.scss";
+import "./add-product-form.scss";
 
 function AddProductForm(props) {
   const initialState = {
@@ -57,6 +57,7 @@ function AddProductForm(props) {
       dispatch(reset());
       props.history.push("/");
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.type, formStatus]);
 
   return (

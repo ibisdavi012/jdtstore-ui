@@ -1,5 +1,5 @@
 import PageActions from "./PageActions";
-import "../sass/components/header.scss";
+import "./header.scss";
 
 function Header(props) {
   return (
