@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import ProductListPage from "./features/product-list/ProductListPage";
-import AddProductPage from "./features/add-product/AddProductPage";
-import ErrorPage from "./errors/ErrorPage";
+import ProductListPage from "./pages/ProductListPage";
+import AddProductPage from "./pages/AddProductPage";
+import ErrorPage from "./pages/ErrorPage";
 
 function App() {
   return (
