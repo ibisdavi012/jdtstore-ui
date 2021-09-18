@@ -1,9 +1,12 @@
 import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { reset } from "../features/add-product/addProductSlice";
+
+import { withRouter } from "react-router-dom";
 
 import "../sass/components/add-product-form.scss";
 
-export default function AddProductForm() {
+function AddProductForm(props) {
   const [productSku, setProductSku] = useState("");
   const [productName, setProductName] = useState("");
   const [productPrice, setProductPrice] = useState(0);
@@ -15,6 +18,13 @@ export default function AddProductForm() {
   };
 
   const formStatus = useSelector((state) => state.addProduct.formStatus);
+
+  const dispatch = useDispatch();
+
+  if (formStatus === "CANCEL") {
+    dispatch(reset());
+    props.history.push("/");
+  }
 
   useEffect(() => {
     setTimeout(() => {
@@ -43,14 +53,14 @@ export default function AddProductForm() {
         setProductSpecifics({});
     }
 
-    if (formStatus === "SAVED") {
-      alert("Yes!");
+    if (formStatus === "SAVING") {
+      dispatch(reset());
+      props.history.push("/");
     }
-  }, [productType, formStatus]);
+  }, [productType, formStatus, props.history, dispatch]);
 
   return (
     <form id="product_form" autoComplete="off">
-      <h1>{formStatus}</h1>
       <div className="form-group">
         <label>SKU</label>
         <input
@@ -194,3 +204,5 @@ export default function AddProductForm() {
     </form>
   );
 }
+
+export default withRouter(AddProductForm);

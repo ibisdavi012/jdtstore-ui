@@ -1,4 +1,4 @@
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { save, cancel } from "../features/add-product/addProductSlice";
 
 import "../sass/components/page-actions.scss";
