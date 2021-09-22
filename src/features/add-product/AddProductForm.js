@@ -1,19 +1,24 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { withRouter } from "react-router-dom";
+import axios from "axios";
 
 import { reset } from "./addProductSlice";
 
 import "./add-product-form.scss";
 
+const productEndpoint = "http://localhost/products";
+
 function AddProductForm(props) {
   const initialState = {
-    sku: "",
-    name: "",
-    price: 0,
+    sku: "TLHA",
+    name: "THALIA'S",
+    price: 170,
     type: "dvd",
-    specifics: { size: 0 },
+    specifics: { size: 480 },
   };
+
+  const selectedType = useRef("DVD");
 
   const [state, setState] = useState(initialState);
 
@@ -39,23 +44,43 @@ function AddProductForm(props) {
       );
     }, 500);
 
-    switch (state.type) {
-      case "dvd":
-        setState({ ...state, specifics: { size: 0 } });
-        break;
-      case "book":
-        setState({ ...state, specifics: { weight: 0 } });
-        break;
-      case "furniture":
-        setState({ ...state, specifics: { height: 0, width: 0, length: 0 } });
-        break;
-      default:
-        setState(initialState);
-    }
+    if (state.type !== selectedType.current)
+      switch (state.type) {
+        case "dvd":
+          setState({ ...state, specifics: { size: 480 } });
+          break;
+        case "book":
+          setState({ ...state, specifics: { weight: 0 } });
+          break;
+        case "furniture":
+          setState({ ...state, specifics: { height: 0, width: 0, length: 0 } });
+          break;
+        default:
+          setState(initialState);
+      }
+
+    selectedType.current = state.type;
 
     if (formStatus === "SAVING") {
-      dispatch(reset());
-      props.history.push("/");
+      const productDescription = {
+        sku: state.sku,
+        name: state.name,
+        price: state.price,
+        type: state.type,
+        ...state.specifics,
+      };
+
+      console.log(productDescription);
+
+      axios
+        .post(productEndpoint, productDescription)
+        .then((response) => {
+          dispatch(reset());
+          props.history.push("/");
+        })
+        .catch((error) => {
+          console.error("Se ha producido un error.");
+        });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.type, formStatus]);
