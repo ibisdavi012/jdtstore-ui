@@ -1,0 +1,24 @@
+.loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 1.6rem;
+  padding-top: 3rem;
+  margin: 2rem;
+
+  .spinner {
+    margin-bottom: 1rem;
+    width: 6rem;
+    height: 6rem;
+    border: 3px solid rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+    border-left-color: rgb(27, 28, 29);
+    animation: spin 1s infinite;
+
+    @keyframes spin {
+      to {
+        transform: rotate((360deg));
+      }
+    }
+  }
+}
