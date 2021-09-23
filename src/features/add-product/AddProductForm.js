@@ -7,15 +7,15 @@ import { reset } from "./addProductSlice";
 
 import "./add-product-form.scss";
 
-const productEndpoint = "http://localhost/products";
+const productEndpoint = "http://192.168.1.5/products";
 
 function AddProductForm(props) {
   const initialState = {
-    sku: "TLHA",
-    name: "THALIA'S",
-    price: 170,
+    sku: "",
+    name: "",
+    price: 0,
     type: "dvd",
-    specifics: { size: 480 },
+    specifics: { size: 0 },
   };
 
   const selectedType = useRef("DVD");
@@ -26,12 +26,12 @@ function AddProductForm(props) {
 
   const dispatch = useDispatch();
 
-  if (formStatus === "CANCEL") {
-    dispatch(reset());
-    props.history.push("/");
-  }
-
   useEffect(() => {
+    if (formStatus === "CANCEL") {
+      dispatch(reset());
+      props.history.push("/");
+    }
+
     setTimeout(() => {
       [...document.getElementsByClassName("dynamic-field")].forEach(
         (dynamicField) => {
@@ -47,7 +47,7 @@ function AddProductForm(props) {
     if (state.type !== selectedType.current)
       switch (state.type) {
         case "dvd":
-          setState({ ...state, specifics: { size: 480 } });
+          setState({ ...state, specifics: { size: 0 } });
           break;
         case "book":
           setState({ ...state, specifics: { weight: 0 } });

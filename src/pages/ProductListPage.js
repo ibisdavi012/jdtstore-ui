@@ -6,21 +6,20 @@ import ProductGrid from "../features/product-list/ProductGrid";
 import NoProducts from "../features/product-list/NoProducts";
 import "./product-list-page.scss";
 
-const productEndpoint = "http://localhost/products";
+const productEndpoint = "http://192.168.1.5/products";
 
 export default function ProductListPage() {
+  const [state, setState] = useState({ loading: true, products: [] });
 
-  const [state, setState] = useState({loading:true,products: []});
-
-  useEffect(() => {    
-    axios.get(productEndpoint).then((result) => {            
-        setState({...state, loading:false, products:result.data.content});                                 
-    });    
+  useEffect(() => {
+    axios.get(productEndpoint).then((result) => {
+      setState({ ...state, loading: false, products: result.data.content });
+    });
   }, []);
 
   return (
-    <Page title="Product List">    
-      <ProductGrid loading={state.loading} products={state.products}/>
+    <Page title="Product List">
+      <ProductGrid loading={state.loading} products={state.products} />
     </Page>
   );
 }
