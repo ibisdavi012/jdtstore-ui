@@ -1,12 +1,12 @@
 import "./no-products.scss";
 
-export default function NoProducs() {
+export default function NoProducts() {
   return (
     <div className="no-products">
-      <img src="sad_face.png" />
+      <img src="sad_face.png" alt="sad face" />
       <p className="message">
         <span className="oops">Ooops!</span>
-        No products to display. Please, come back later and try again later...
+        No products to display. Please, come back later and try again...
       </p>
     </div>
   );

@@ -1,25 +1,42 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { load } from "../features/product-list/productListSlice";
 import Page from "../common/Page";
-import Loader from "../common/Loader";
 import ProductGrid from "../features/product-list/ProductGrid";
 import NoProducts from "../features/product-list/NoProducts";
 import "./product-list-page.scss";
 
-const productEndpoint = "http://192.168.1.5/products";
+const productEndpoint = "http://localhost/products";
 
 export default function ProductListPage() {
   const [state, setState] = useState({ loading: true, products: [] });
+  const [error, setError] = useState(false);
+
+  const products = useSelector((state) => state.productList.products);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    axios.get(productEndpoint).then((result) => {
-      setState({ ...state, loading: false, products: result.data.content });
-    });
+    axios
+      .get(productEndpoint)
+      .then((result) => {
+        dispatch(load({ products: result.data.content }));
+        setState({ ...state, loading: false });
+        setError(false);
+      })
+      .catch((error) => {
+        setError(true);
+      });
   }, []);
 
   return (
     <Page title="Product List">
-      <ProductGrid loading={state.loading} products={state.products} />
+      {error ? (
+        <NoProducts />
+      ) : (
+        <ProductGrid loading={state.loading} products={products} />
+      )}
     </Page>
   );
 }

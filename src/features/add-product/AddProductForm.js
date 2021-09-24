@@ -7,7 +7,7 @@ import { reset } from "./addProductSlice";
 
 import "./add-product-form.scss";
 
-const productEndpoint = "http://192.168.1.5/products";
+const productEndpoint = "http://localhost/products";
 
 function AddProductForm(props) {
   const initialState = {
