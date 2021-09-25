@@ -32,15 +32,20 @@ export const productList = createSlice({
       }
     },
     mass_delete: (state, action) => {
-      console.log("Before", current(state.product_list.products));
-
       state.product_list.products = state.product_list.products.filter(
         (product) => {
-          return !action.payload.deleted.includes(product.id);
+          if (action.payload.deleted.includes(product.id)) {
+            state.product_list.selected = state.product_list.selected.filter(
+              (selectedProduct) => {
+                return !selectedProduct === product.id;
+              }
+            );
+            return false;
+          } else {
+            return true;
+          }
         }
       );
-
-      console.log("After", state.product_list.products);
     },
   },
 });

@@ -1,12 +1,15 @@
 import "./product-details.scss";
+import ProductSpecifics from "./ProductSpecifics";
 
-export default function ProductDetails() {
+export default function ProductDetails({ product }) {
   return (
     <div className="product__details">
-      <div className="product__id">JVC20003459</div>
-      <div className="product__description">Acme DISC</div>
-      <div className="product__price">$1.00</div>
-      <div className="product__info">Size: 700 Mb</div>
+      <div className="product__id">{product.id}</div>
+      <div className="product__description">{product.name}</div>
+      <div className="product__price">$ {product.price}</div>
+      <div className="product__info">
+        <ProductSpecifics product={product} />
+      </div>
     </div>
   );
 }

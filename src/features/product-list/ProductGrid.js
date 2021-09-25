@@ -21,16 +21,7 @@ export default function ProductGrid({ loading, products }) {
   return (
     <div className="product-grid">
       {products.map((product, index) => {
-        switch (product.type) {
-          case "dvd":
-            return <Dvd key={product.id} product={product} />;
-          case "book":
-            return <Book key={product.id} product={product} />;
-          case "furniture":
-            return <Furniture key={product.id} product={product} />;
-          default:
-            return <Product key={product.id} product={product} />;
-        }
+        return <Product key={product.id} product={product} />;
       })}
     </div>
   );
