@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { FaTrashAlt } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { mass_delete } from "../product-list/productListSlice";
 
@@ -19,7 +20,8 @@ export default function MassDeleteButton() {
 
   return (
     <button id="delete-product-btn" onClick={() => setDeleting(true)}>
-      R Mass Delete
+      <FaTrashAlt />
+      Mass Delete
     </button>
   );
 }

@@ -1,9 +1,6 @@
 import { useSelector } from "react-redux";
 import NoProducts from "./NoProducts";
 import Product from "./Product";
-import Book from "./Book";
-import Dvd from "./Dvd";
-import Furniture from "./Furniture";
 import Loader from "../../common/Loader";
 
 import "./product-grid.scss";
