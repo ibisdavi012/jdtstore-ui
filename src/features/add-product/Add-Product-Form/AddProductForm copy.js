@@ -98,13 +98,30 @@ function AddProductForm(props) {
         onChange={onChange}
         type="sku"
       />
-      <FormField
-        label="Name"
-        id="name"
-        value={state.name}
-        onChange={onChange}
-        type="text"
-      />
+      <hr />
+      <div className="form-group">
+        <label>SKU</label>
+        <input
+          id="sku"
+          type="text"
+          placeholder="product's SKU"
+          onChange={(e) => setState({ ...state, sku: e.target.value })}
+          value={state.sku || ""}
+        />
+      </div>
+
+      <div className="form-group">
+        <label>Name</label>
+        <input
+          id="name"
+          type="text"
+          placeholder="product's name"
+          onChange={(e) => {
+            setState({ ...state, name: e.target.value });
+          }}
+          value={state.name || ""}
+        />
+      </div>
 
       <div className="form-group">
         <label>Price($)</label>

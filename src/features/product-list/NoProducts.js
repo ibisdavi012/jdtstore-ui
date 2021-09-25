@@ -6,7 +6,8 @@ export default function NoProducts() {
       <img src="sad_face.png" alt="sad face" />
       <p className="message">
         <span className="oops">Ooops!</span>
-        No products to display. Please, come back later and try again...
+        It seems there a no products to display or somethig went wrong. Please,
+        come back later and try again...
       </p>
     </div>
   );
