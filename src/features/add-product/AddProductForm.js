@@ -70,8 +70,6 @@ function AddProductForm(props) {
         ...state.specifics,
       };
 
-      console.log(productDescription);
-
       axios
         .post(productEndpoint, productDescription)
         .then((response) => {
