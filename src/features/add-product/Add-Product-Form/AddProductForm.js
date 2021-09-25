@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { withRouter } from "react-router-dom";
 import axios from "axios";
 
-import { reset } from "./addProductSlice";
+import { reset } from "../addProductSlice";
 
 import "./add-product-form.scss";
 
