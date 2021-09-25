@@ -5,11 +5,13 @@ import { mass_delete } from "../product-list/productListSlice";
 export default function MassDeleteButton() {
   const dispatch = useDispatch();
   const [deleting, setDeleting] = useState(false);
-  const selectedProducts = useSelector((state) => state.productList.selected);
+  const selectedProducts = useSelector(
+    (state) => state.productList.product_list.selected
+  );
 
   useEffect(() => {
     if (deleting) {
-      dispatch(mass_delete({ deleted: ["51"] }));
+      dispatch(mass_delete({ deleted: selectedProducts }));
       setDeleting(false);
     }
   }, [deleting]);

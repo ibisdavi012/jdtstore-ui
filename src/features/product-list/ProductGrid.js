@@ -23,13 +23,13 @@ export default function ProductGrid({ loading, products }) {
       {products.map((product, index) => {
         switch (product.type) {
           case "dvd":
-            return <Dvd key={index} product={product} />;
+            return <Dvd key={product.id} product={product} />;
           case "book":
-            return <Book key={index} product={product} />;
+            return <Book key={product.id} product={product} />;
           case "furniture":
-            return <Furniture key={index} product={product} />;
+            return <Furniture key={product.id} product={product} />;
           default:
-            return <Product key={index} product={product} />;
+            return <Product key={product.id} product={product} />;
         }
       })}
     </div>

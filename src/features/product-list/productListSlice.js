@@ -1,34 +1,46 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, current } from "@reduxjs/toolkit";
 
 export const productList = createSlice({
   name: "productList",
-  initialState: { products: [], selected: [] },
+  initialState: { product_list: { products: [], selected: [] } },
   reducers: {
     load: (state, action) => {
-      state = { ...state, products: action.payload.products, selected: [] };
+      state = { ...state };
+      state.product_list.products = action.payload.products;
     },
     select: (state, action) => {
       state = { ...state };
+      state.product_list.products = [...state.product_list.products];
+      state.product_list.selected = [...state.product_list.selected];
+
       if (
         action.payload.checked &&
-        !state.selected.includes(action.payload.productId)
+        !state.product_list.selected.includes(action.payload.productId)
       ) {
-        state.selected = [...state.selected, action.payload.productId];
+        state.product_list.selected = [
+          ...state.product_list.selected,
+          action.payload.productId,
+        ];
       } else {
-        state.selected = state.selected.filter((productId) => {
-          return (
-            productId !== action.payload.productId && !action.payload.checked
-          );
-        });
+        state.product_list.selected = state.product_list.selected.filter(
+          (productId) => {
+            return (
+              productId !== action.payload.productId && !action.payload.checked
+            );
+          }
+        );
       }
     },
     mass_delete: (state, action) => {
-      state = { ...state };
-      if (action.payload.deleted) {
-        state.products = state.products.filter((productId) => {
-          return !action.payload.deleted.includes(productId);
-        });
-      }
+      console.log("Before", current(state.product_list.products));
+
+      state.product_list.products = state.product_list.products.filter(
+        (product) => {
+          return !action.payload.deleted.includes(product.id);
+        }
+      );
+
+      console.log("After", state.product_list.products);
     },
   },
 });

@@ -10,10 +10,12 @@ import "./product-list-page.scss";
 const productEndpoint = "http://localhost/products";
 
 export default function ProductListPage() {
-  const [state, setState] = useState({ loading: true, products: [] });
+  const [state, setState] = useState({ loading: true });
   const [error, setError] = useState(false);
 
-  const products = useSelector((state) => state.productList.products);
+  const products = useSelector(
+    (state) => state.productList.product_list.products
+  );
 
   const dispatch = useDispatch();
 
@@ -29,7 +31,6 @@ export default function ProductListPage() {
         setError(true);
       });
   }, []);
-
   return (
     <Page title="Product List">
       {error ? (

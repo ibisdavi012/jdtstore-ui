@@ -1,0 +1,2 @@
+.product{border:1px solid gray;padding:0.8rem;min-height:20rem;overflow:hidden;border-radius:0.3rem;position:relative;opacity:0.4;top:10rem;-webkit-animation:productFadeIn 0.5s ease 0s forwards;animation:productFadeIn 0.5s ease 0s forwards}.product .product__actions{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-pack:left;-ms-flex-pack:left;justify-content:left}@-webkit-keyframes productFadeIn{to{top:0;opacity:1}}@keyframes productFadeIn{to{top:0;opacity:1}}
+/*# sourceMappingURL=product.css.map */
