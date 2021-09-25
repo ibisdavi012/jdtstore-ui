@@ -9,16 +9,24 @@ function prepareMessage(pass, message) {
   return { pass: pass, message: message };
 }
 
+function isAlphanumeric(value, minLength, maxLength) {
+  const regExPattern = `^[a-z0-9]{${minLength},${maxLength}}$`;
+
+  const reg = new RegExp(regExPattern, "i");
+
+  return reg.test(value);
+}
+
 export function sku(value) {
   // Alphanumeric string between 10-20 characters
-  const skuRegExPatter = /^[a-z0-9]{10,20}$/i;
+
   const notSku = "It must be an alphanumeric value between 10-20 characters.";
 
   if (!isNotEmpty(value)) {
     return prepareMessage(false, empty);
   }
 
-  if (skuRegExPatter.test(value)) {
+  if (isAlphanumeric(value, 10, 20)) {
     return prepareMessage(true, "");
   }
 
@@ -42,5 +50,12 @@ export function text(value) {
     return prepareMessage(false, empty);
   }
 
-  return prepareMessage(true, "");
+  if (isAlphanumeric(value, 5, 15)) {
+    return prepareMessage(true, "");
+  }
+
+  return prepareMessage(
+    false,
+    "Enter an alphanumeric value between 5 and 15 characters."
+  );
 }
