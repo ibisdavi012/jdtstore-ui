@@ -8,6 +8,11 @@ export default function FormField({
   onChange,
   value,
   reportError,
+  minLength,
+  maxLength,
+  isDynamic,
+  visible,
+  category,
 }) {
   const [error, setError] = useState("");
 
@@ -21,10 +26,11 @@ export default function FormField({
       case "units":
         result = units(e.target.value, unit);
         break;
-      case "price":
+      case "usd":
+        result = usd(e.target.value, unit);
         break;
       default:
-        result = text(e.target.value);
+        result = text(e.target.value, minLength, maxLength);
         break;
     }
 
@@ -37,12 +43,16 @@ export default function FormField({
   };
 
   return (
-    <div className={`form-group ${error ? "error" : ""}`}>
+    <div
+      className={`form-group ${error ? "error" : ""} ${
+        isDynamic ? "dynamic-field" : ""
+      } ${visible ? "visible" : "hidden"}`}
+    >
       <label>{label}</label>
       <input
         id={id}
         type="text"
-        placeholder={`product's ${id.toLowerCase()}`}
+        placeholder={`${category ? category : "product"}'s ${id.toLowerCase()}`}
         onChange={(e) => validate(e)}
         value={value || ""}
       />
@@ -54,4 +64,8 @@ export default function FormField({
 FormField.defaultProps = {
   label: "Field's Label",
   id: "fields-id",
+  minLength: 5,
+  maxLength: 15,
+  isDynamic: false,
+  visible: true,
 };

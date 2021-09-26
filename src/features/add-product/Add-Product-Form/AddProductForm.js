@@ -104,20 +104,17 @@ function AddProductForm(props) {
         value={state.name}
         onChange={onChange}
         type="text"
+        minLength={5}
+        maxLength={15}
       />
 
-      <div className="form-group">
-        <label>Price($)</label>
-        <input
-          id="price"
-          type="text"
-          placeholder="product's price"
-          onChange={(e) => {
-            setState({ ...state, price: e.target.value });
-          }}
-          value={state.price || ""}
-        />
-      </div>
+      <FormField
+        label="Price in (USD)"
+        id="price"
+        value={state.price}
+        onChange={onChange}
+        type="usd"
+      />
 
       <div className="form-group">
         <label>Type Switcher</label>
@@ -139,44 +136,31 @@ function AddProductForm(props) {
           </option>
         </select>
       </div>
-      <div
-        className={`form-group dynamic-field ${
-          state.type !== "dvd" ? "hidden" : "visible"
-        }`}
-      >
-        <label>Size (Mb)</label>
-        <input
-          id="size"
-          type="text"
-          placeholder="dvd's size"
-          onChange={(e) => {
-            setState({
-              ...state,
-              specifics: { ...state.specifics, size: e.target.value },
-            });
-          }}
-          value={state.specifics.size || ""}
-        />
-      </div>
-      <div
-        className={`form-group dynamic-field ${
-          state.type !== "book" ? "hidden" : "visible"
-        }`}
-      >
-        <label>Weight (Kg)</label>
-        <input
-          id="weight"
-          type="text"
-          placeholder="books's weight"
-          onChange={(e) => {
-            setState({
-              ...state,
-              specifics: { ...state.specifics, weight: e.target.value },
-            });
-          }}
-          value={state.specifics.weight || ""}
-        />
-      </div>
+
+      <FormField
+        label="Size (Mb)"
+        id="size"
+        category="dvd"
+        value={state.size}
+        onChange={onChange}
+        type="unit"
+        isDynamic={true}
+        unit="mb"
+        visible={state.type === "dvd"}
+      />
+
+      <FormField
+        label="Weight KK (Kg)"
+        id="weight"
+        category="book"
+        value={state.weight}
+        onChange={onChange}
+        type="unit"
+        isDynamic={true}
+        unit="kg"
+        visible={state.type === "book"}
+      />
+
       <div
         className={`dynamic-field ${
           state.type !== "furniture" ? "hidden" : "visible"
