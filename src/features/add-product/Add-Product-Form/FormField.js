@@ -51,6 +51,7 @@ export default function FormField({
         type="text"
         placeholder={`${category ? category : "product"}'s ${id.toLowerCase()}`}
         onChange={(e) => validate(e)}
+        onBlur={(e) => validate(e)}
         value={value || ""}
         data-category={category}
       />

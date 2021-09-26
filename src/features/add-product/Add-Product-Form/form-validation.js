@@ -70,7 +70,21 @@ export function usd(value) {
 }
 
 export function units(value, requiredUnit) {
-  console.log(value, requiredUnit);
+  const unitReg = new RegExp(
+    `^(\\d+|\\d{0,3}\\.\\d{1,2})+[\\s]{0,1}${requiredUnit}+$`,
+    "i"
+  );
+
+  if (!isNotEmpty(value)) {
+    return prepareMessage(false, empty);
+  }
+
+  if (!unitReg.test(value)) {
+    return prepareMessage(
+      false,
+      `It must be a valid number expressed in ${requiredUnit}. Ex. 12${requiredUnit} / 22 ${requiredUnit} / 2.50${requiredUnit}`
+    );
+  }
   return prepareMessage(true, "");
 }
 

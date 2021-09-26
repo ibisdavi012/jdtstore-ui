@@ -8,8 +8,9 @@ import { reset, abort, saved } from "../addProductSlice";
 
 import "./add-product-form.scss";
 import DynamicFieldGroup from "./DynamicFieldGroup";
+import FormError from "./FormError";
 
-const productEndpoint = "http://localhostp/products";
+const productEndpoint = "http://localhost/products";
 
 function AddProductForm(props) {
   const initialState = {
@@ -117,6 +118,7 @@ function AddProductForm(props) {
           })
           .catch((error) => {
             setErrorSaving(true);
+            dispatch(abort());
           });
       }
     }
@@ -144,20 +146,15 @@ function AddProductForm(props) {
 
   return (
     <form id="product_form" autoComplete="off">
-      {errors.length > 0 && displayFormError ? (
-        <p className="error-notification">
-          You must fill the requested fields in order to proceed.
-        </p>
-      ) : (
-        ""
-      )}
-      {errorSaving && displayFormError ? (
-        <p className="error-notification">
-          This form could not be saved. PLease, try again.
-        </p>
-      ) : (
-        ""
-      )}
+      <FormError
+        visible={errors.length > 0 && displayFormError}
+        message="You must fill the requested fields in order to proceed."
+      />
+      <FormError
+        visible={errorSaving && displayFormError}
+        message="This form could not be saved. Please, check you internet connection,
+          the input fields and then try again."
+      />
 
       <FormField
         label="SKU"
@@ -217,7 +214,7 @@ function AddProductForm(props) {
           category="dvd"
           value={state.size}
           onChange={onChange}
-          type="unit"
+          type="units"
           unit="mb"
           reportError={reportError}
         />
@@ -229,7 +226,7 @@ function AddProductForm(props) {
           category="book"
           value={state.weight}
           onChange={onChange}
-          type="unit"
+          type="units"
           unit="kg"
           reportError={reportError}
         />
