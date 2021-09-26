@@ -4,12 +4,12 @@ import { withRouter } from "react-router-dom";
 import axios from "axios";
 import FormField from "./FormField";
 
-import { reset, abort } from "../addProductSlice";
+import { reset, abort, saved } from "../addProductSlice";
 
 import "./add-product-form.scss";
 import DynamicFieldGroup from "./DynamicFieldGroup";
 
-const productEndpoint = "http://localhost/products";
+const productEndpoint = "http://localhostp/products";
 
 function AddProductForm(props) {
   const initialState = {
@@ -25,6 +25,10 @@ function AddProductForm(props) {
   const [state, setState] = useState(initialState);
 
   const [errors, setErrors] = useState([]);
+
+  const [displayFormError, setDisplayFormError] = useState(false);
+
+  const [errorSaving, setErrorSaving] = useState(false);
 
   const formStatus = useSelector((state) => state.addProduct.formStatus);
 
@@ -65,16 +69,35 @@ function AddProductForm(props) {
 
       selectedType.current = state.type;
 
-      const inputs = document.querySelectorAll(
-        `input[data-category='${state.type}']`
-      );
+      const inputs = document.querySelectorAll(`input`);
 
-      inputs.forEach((input) => {
-        console.log(input.id);
+      const newErrors = [];
+
+      inputs.forEach(({ value, id, attributes }) => {
+        if (!errors.includes(id)) {
+          if (
+            (attributes["data-category"].value === state.type ||
+              attributes["data-category"].value === "default") &&
+            value === ""
+          ) {
+            newErrors.push(id);
+          }
+        } else {
+          if (
+            attributes["data-category"].value === state.type ||
+            attributes["data-category"].value === "default"
+          ) {
+            newErrors.push(id);
+          }
+        }
       });
+
+      setErrors([...newErrors]);
     }
 
     if (formStatus === "SAVE_REQUEST") {
+      setDisplayFormError(true);
+
       const productDescription = {
         sku: state.sku,
         name: state.name,
@@ -85,29 +108,26 @@ function AddProductForm(props) {
 
       if (errors.length) {
         dispatch(abort());
-        console.log("Saving was aborted.");
       } else {
-        console.log("Ready to save");
+        axios
+          .post(productEndpoint, productDescription)
+          .then((response) => {
+            dispatch(saved());
+            props.history.push("/");
+          })
+          .catch((error) => {
+            setErrorSaving(true);
+          });
       }
     }
 
-    if (formStatus === "SAVING") {
-      const productDescription = "";
-      axios
-        .post(productEndpoint, productDescription)
-        .then((response) => {
-          dispatch(reset());
-          props.history.push("/");
-        })
-        .catch((error) => {
-          console.error("Se ha producido un error.");
-        });
-    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state.type, formStatus]);
+  }, [state.type, formStatus, errorSaving]);
 
   const onChange = (target) => {
     setState({ ...state, [target.id]: target.value });
+    setDisplayFormError(false);
+    setErrorSaving(false);
   };
 
   const reportError = (id, error) => {
@@ -124,14 +144,25 @@ function AddProductForm(props) {
 
   return (
     <form id="product_form" autoComplete="off">
-      {errors.length > 0 ? (
-        <p className="error-notification">Please fill the requested fields.</p>
+      {errors.length > 0 && displayFormError ? (
+        <p className="error-notification">
+          You must fill the requested fields in order to proceed.
+        </p>
       ) : (
         ""
       )}
+      {errorSaving && displayFormError ? (
+        <p className="error-notification">
+          This form could not be saved. PLease, try again.
+        </p>
+      ) : (
+        ""
+      )}
+
       <FormField
         label="SKU"
         id="sku"
+        category="default"
         value={state.sku}
         onChange={onChange}
         type="sku"
@@ -140,6 +171,7 @@ function AddProductForm(props) {
       <FormField
         label="Name"
         id="name"
+        category="default"
         value={state.name}
         onChange={onChange}
         type="text"
@@ -151,6 +183,7 @@ function AddProductForm(props) {
       <FormField
         label="Price in (USD)"
         id="price"
+        category="default"
         value={state.price}
         onChange={onChange}
         type="usd"

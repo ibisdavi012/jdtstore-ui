@@ -87,8 +87,20 @@
   }
 
   .error-notification {
-    color: red;
-    font-size: 1.4rem;
+    color: rgb(0, 0, 0);
+    font-size: 1.6rem;
+    text-align: center;
+    font-weight: bold;
     margin-bottom: 1rem;
+    animation: NotificationEffect 1s ease 0s infinite;
+
+    @keyframes NotificationEffect {
+      from {
+        color: black;
+      }
+      to {
+        color: red;
+      }
+    }
   }
 }
