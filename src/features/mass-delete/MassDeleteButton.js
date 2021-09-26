@@ -12,7 +12,6 @@ export default function MassDeleteButton() {
 
   useEffect(() => {
     if (deleting) {
-      console.log("SELECTED", selectedProducts);
       dispatch(mass_delete({ deleted: selectedProducts }));
       setDeleting(false);
     }
