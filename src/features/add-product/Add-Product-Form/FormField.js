@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import { sku, units, text, usd } from "./form-validation";
 export default function FormField({
   label,
@@ -10,44 +11,40 @@ export default function FormField({
   reportError,
   minLength,
   maxLength,
-  isDynamic,
-  visible,
   category,
 }) {
   const [error, setError] = useState("");
 
-  const validate = (e) => {
+  const validate = ({ target }) => {
     let result = {};
 
     switch (type) {
       case "sku":
-        result = sku(e.target.value);
+        result = sku(target.value);
         break;
       case "units":
-        result = units(e.target.value, unit);
+        result = units(target.value, unit);
         break;
       case "usd":
-        result = usd(e.target.value, unit);
+        result = usd(target.value, unit);
         break;
       default:
-        result = text(e.target.value, minLength, maxLength);
+        result = text(target.value, minLength, maxLength);
         break;
     }
 
     if (!result.pass) {
       setError(result.message);
+      reportError(target.id, true);
     } else {
+      reportError(target.id, false);
       setError("");
     }
-    onChange(e);
+    onChange(target);
   };
 
   return (
-    <div
-      className={`form-group ${error ? "error" : ""} ${
-        isDynamic ? "dynamic-field" : ""
-      } ${visible ? "visible" : "hidden"}`}
-    >
+    <div className={`form-group ${error ? "error" : ""} `}>
       <label>{label}</label>
       <input
         id={id}
@@ -55,6 +52,7 @@ export default function FormField({
         placeholder={`${category ? category : "product"}'s ${id.toLowerCase()}`}
         onChange={(e) => validate(e)}
         value={value || ""}
+        data-category={category}
       />
       {error.length ? <p className="error-message">{error}</p> : ""}
     </div>
@@ -66,6 +64,4 @@ FormField.defaultProps = {
   id: "fields-id",
   minLength: 5,
   maxLength: 15,
-  isDynamic: false,
-  visible: true,
 };

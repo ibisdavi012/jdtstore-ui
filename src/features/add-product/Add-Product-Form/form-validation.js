@@ -70,7 +70,8 @@ export function usd(value) {
 }
 
 export function units(value, requiredUnit) {
-  return true;
+  console.log(value, requiredUnit);
+  return prepareMessage(true, "");
 }
 
 // Checks that if input meet some rules:

@@ -4,15 +4,15 @@ import { withRouter } from "react-router-dom";
 import axios from "axios";
 import FormField from "./FormField";
 
-import { reset } from "../addProductSlice";
+import { reset, abort } from "../addProductSlice";
 
 import "./add-product-form.scss";
+import DynamicFieldGroup from "./DynamicFieldGroup";
 
 const productEndpoint = "http://localhost/products";
 
 function AddProductForm(props) {
   const initialState = {
-    error: false,
     sku: "",
     name: "",
     price: 0,
@@ -20,9 +20,11 @@ function AddProductForm(props) {
     specifics: { size: 0 },
   };
 
-  const selectedType = useRef("DVD");
+  const selectedType = useRef("");
 
   const [state, setState] = useState(initialState);
+
+  const [errors, setErrors] = useState([]);
 
   const formStatus = useSelector((state) => state.addProduct.formStatus);
 
@@ -46,7 +48,7 @@ function AddProductForm(props) {
       );
     }, 500);
 
-    if (state.type !== selectedType.current)
+    if (state.type !== selectedType.current) {
       switch (state.type) {
         case "dvd":
           setState({ ...state, specifics: { size: 0 } });
@@ -61,9 +63,18 @@ function AddProductForm(props) {
           setState(initialState);
       }
 
-    selectedType.current = state.type;
+      selectedType.current = state.type;
 
-    if (formStatus === "SAVING") {
+      const inputs = document.querySelectorAll(
+        `input[data-category='${state.type}']`
+      );
+
+      inputs.forEach((input) => {
+        console.log(input.id);
+      });
+    }
+
+    if (formStatus === "SAVE_REQUEST") {
       const productDescription = {
         sku: state.sku,
         name: state.name,
@@ -72,6 +83,16 @@ function AddProductForm(props) {
         ...state.specifics,
       };
 
+      if (errors.length) {
+        dispatch(abort());
+        console.log("Saving was aborted.");
+      } else {
+        console.log("Ready to save");
+      }
+    }
+
+    if (formStatus === "SAVING") {
+      const productDescription = "";
       axios
         .post(productEndpoint, productDescription)
         .then((response) => {
@@ -85,18 +106,36 @@ function AddProductForm(props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.type, formStatus]);
 
-  const onChange = (e) => {
-    setState({ ...state, [e.target.id]: e.target.value });
+  const onChange = (target) => {
+    setState({ ...state, [target.id]: target.value });
+  };
+
+  const reportError = (id, error) => {
+    if (error) {
+      if (!errors.includes(id)) {
+        setErrors([...errors, id]);
+      }
+    } else {
+      if (errors.includes(id)) {
+        setErrors(errors.filter((target) => target !== id));
+      }
+    }
   };
 
   return (
     <form id="product_form" autoComplete="off">
+      {errors.length > 0 ? (
+        <p className="error-notification">Please fill the requested fields.</p>
+      ) : (
+        ""
+      )}
       <FormField
         label="SKU"
         id="sku"
         value={state.sku}
         onChange={onChange}
         type="sku"
+        reportError={reportError}
       />
       <FormField
         label="Name"
@@ -106,6 +145,7 @@ function AddProductForm(props) {
         type="text"
         minLength={5}
         maxLength={15}
+        reportError={reportError}
       />
 
       <FormField
@@ -114,6 +154,7 @@ function AddProductForm(props) {
         value={state.price}
         onChange={onChange}
         type="usd"
+        reportError={reportError}
       />
 
       <div className="form-group">
@@ -136,82 +177,63 @@ function AddProductForm(props) {
           </option>
         </select>
       </div>
+      <DynamicFieldGroup visible={state.type === "dvd"}>
+        <FormField
+          label="Size (Mb)"
+          id="size"
+          category="dvd"
+          value={state.size}
+          onChange={onChange}
+          type="unit"
+          unit="mb"
+          reportError={reportError}
+        />
+      </DynamicFieldGroup>
+      <DynamicFieldGroup visible={state.type === "book"}>
+        <FormField
+          label="Weight (Kg)"
+          id="weight"
+          category="book"
+          value={state.weight}
+          onChange={onChange}
+          type="unit"
+          unit="kg"
+          reportError={reportError}
+        />
+      </DynamicFieldGroup>
+      <DynamicFieldGroup visible={state.type === "furniture"}>
+        <FormField
+          label="Height (cm)"
+          id="height"
+          category="furniture"
+          value={state.height}
+          onChange={onChange}
+          type="units"
+          unit="cm"
+          reportError={reportError}
+        />
 
-      <FormField
-        label="Size (Mb)"
-        id="size"
-        category="dvd"
-        value={state.size}
-        onChange={onChange}
-        type="unit"
-        isDynamic={true}
-        unit="mb"
-        visible={state.type === "dvd"}
-      />
-
-      <FormField
-        label="Weight KK (Kg)"
-        id="weight"
-        category="book"
-        value={state.weight}
-        onChange={onChange}
-        type="unit"
-        isDynamic={true}
-        unit="kg"
-        visible={state.type === "book"}
-      />
-
-      <div
-        className={`dynamic-field ${
-          state.type !== "furniture" ? "hidden" : "visible"
-        }`}
-      >
-        <div className="form-group">
-          <label>Height (cm)</label>
-          <input
-            id="height"
-            type="text"
-            placeholder="furniture's height"
-            onChange={(e) => {
-              setState({
-                ...state,
-                specifics: { ...state.specifics, height: e.target.value },
-              });
-            }}
-            value={state.specifics.height || ""}
-          />
-        </div>
-        <div className="form-group">
-          <label>Width (cm)</label>
-          <input
-            id="width"
-            type="text"
-            placeholder="furniture's width"
-            onChange={(e) => {
-              setState({
-                ...state,
-                specifics: { ...state.specifics, width: e.target.value },
-              });
-            }}
-            value={state.specifics.width || ""}
-          />
-        </div>
-        <div className="form-group">
-          <label>Length($)</label>
-          <input
-            id="length"
-            type="text"
-            placeholder="furniture's length"
-            onChange={(e) => {
-              setState({
-                ...state,
-                specifics: { ...state.specifics, length: e.target.value },
-              });
-            }}
-            value={state.specifics.length || ""}
-          />
-        </div>
-      </div>
+        <FormField
+          label="Width (cm)"
+          id="width"
+          category="furniture"
+          value={state.width}
+          onChange={onChange}
+          type="units"
+          unit="cm"
+          reportError={reportError}
+        />
+        <FormField
+          label="Length (cm)"
+          id="length"
+          category="furniture"
+          value={state.length}
+          onChange={onChange}
+          type="units"
+          unit="cm"
+          reportError={reportError}
+        />
+      </DynamicFieldGroup>
     </form>
   );
 }

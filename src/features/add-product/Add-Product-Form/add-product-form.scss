@@ -85,4 +85,10 @@
   select:focus {
     background-color: rgb(221, 212, 212);
   }
+
+  .error-notification {
+    color: red;
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+  }
 }

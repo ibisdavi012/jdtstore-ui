@@ -9,8 +9,14 @@ export const addProductSlice = createSlice({
     save: (state) => {
       state.formStatus = "SAVING";
     },
+    save_request: (state) => {
+      state.formStatus = "SAVE_REQUEST";
+    },
     cancel: (state) => {
       state.formStatus = "CANCEL";
+    },
+    abort: (state) => {
+      state.formStatus = "STAND_BY";
     },
     reset: (state) => {
       state.formStatus = "STAND_BY";
@@ -18,6 +24,7 @@ export const addProductSlice = createSlice({
   },
 });
 
-export const { save, cancel, reset } = addProductSlice.actions;
+export const { save, cancel, reset, save_request, abort } =
+  addProductSlice.actions;
 
 export default addProductSlice.reducer;

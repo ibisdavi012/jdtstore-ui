@@ -1,6 +1,6 @@
 import { FaDatabase, FaTimes } from "react-icons/fa";
 import { useDispatch } from "react-redux";
-import { save, cancel } from "./addProductSlice";
+import { save_request, cancel } from "./addProductSlice";
 
 import "./save-product-actions.scss";
 
@@ -9,7 +9,7 @@ export default function SaveProductActions() {
 
   return (
     <>
-      <button onClick={() => dispatch(save())}>
+      <button onClick={() => dispatch(save_request())}>
         <FaDatabase />
         Save
       </button>
