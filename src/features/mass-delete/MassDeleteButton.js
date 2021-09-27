@@ -15,27 +15,28 @@ export default function MassDeleteButton() {
 
   const deleteProducts = async () => {
     const requests = [];
+    const deletedProducts = [];
 
     selectedProducts.forEach((product) => {
-      console.log(product);
       requests.push(axios.delete(`${productsEndPoint}/${product}`));
     });
 
     await axios.all([...requests]).then(
       axios.spread((...responses) => {
-        console.log("here", responses);
+        responses.forEach((response) => {
+          if (response.data && response.data.affected_rows) {
+            console.log(response.data);
+            deletedProducts.push(response.data.content.deleted_id);
+          }
+        });
       })
     );
 
-    //setDeleting(true);
-  };
+    console.log(deletedProducts);
 
-  useEffect(() => {
-    if (deleting) {
-      dispatch(mass_delete({ deleted: selectedProducts }));
-      setDeleting(false);
-    }
-  }, [deleting]);
+    dispatch(mass_delete({ deleted: deletedProducts }));
+    setDeleting(false);
+  };
 
   return (
     <button id="delete-product-btn" onClick={() => deleteProducts()}>
