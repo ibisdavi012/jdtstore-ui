@@ -102,10 +102,12 @@ function AddProductForm(props) {
       const productDescription = {
         sku: state.sku,
         name: state.name,
-        price: state.price,
+        price: parseFloat(state.price.replace(",", "")),
         type: state.type,
         ...state.specifics,
       };
+
+      console.log(productDescription);
 
       if (errors.length) {
         dispatch(abort());
@@ -127,7 +129,15 @@ function AddProductForm(props) {
   }, [state.type, formStatus, errorSaving]);
 
   const onChange = (target) => {
-    setState({ ...state, [target.id]: target.value });
+    if (state.hasOwnProperty(target.id)) {
+      setState({ ...state, [target.id]: target.value });
+    } else {
+      setState({
+        ...state,
+        specifics: { ...state.specifics, [target.id]: target.value },
+      });
+    }
+
     setDisplayFormError(false);
     setErrorSaving(false);
   };
@@ -212,7 +222,7 @@ function AddProductForm(props) {
           label="Size (Mb)"
           id="size"
           category="dvd"
-          value={state.size}
+          value={state.specifics.size}
           onChange={onChange}
           type="units"
           unit="mb"
@@ -224,7 +234,7 @@ function AddProductForm(props) {
           label="Weight (Kg)"
           id="weight"
           category="book"
-          value={state.weight}
+          value={state.specifics.weight}
           onChange={onChange}
           type="units"
           unit="kg"
@@ -236,7 +246,7 @@ function AddProductForm(props) {
           label="Height (cm)"
           id="height"
           category="furniture"
-          value={state.height}
+          value={state.specifics.height}
           onChange={onChange}
           type="units"
           unit="cm"
@@ -247,7 +257,7 @@ function AddProductForm(props) {
           label="Width (cm)"
           id="width"
           category="furniture"
-          value={state.width}
+          value={state.specifics.width}
           onChange={onChange}
           type="units"
           unit="cm"
@@ -257,7 +267,7 @@ function AddProductForm(props) {
           label="Length (cm)"
           id="length"
           category="furniture"
-          value={state.length}
+          value={state.specifics.length}
           onChange={onChange}
           type="units"
           unit="cm"

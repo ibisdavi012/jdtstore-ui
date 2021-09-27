@@ -57,12 +57,16 @@ export function isNotEmpty(value) {
 
 // Valides a value in USD
 export function usd(value) {
-  const validUsd = new RegExp(/^\$(\d{1,3}(\,\d{3})*|(\d+))(\.\d{2})?$/);
+  if (!isNotEmpty(value)) {
+    return prepareMessage(false, empty);
+  }
+
+  const validUsd = new RegExp(/^(\d{1,3}(\,\d{3})*|(\d+))(\.\d{2})?$/);
 
   if (!validUsd.test(value)) {
     return prepareMessage(
       false,
-      "Value is not in USD. Please follow any of the standard rules including the $ at the at the beginning. Ex. $12.30 / $1,200.20 / $0.75"
+      "Value is not in USD. Please follow any of the standard american rule for expressing a number. Ex. 12.30 / 1,200.20 / 0.75"
     );
   }
 
