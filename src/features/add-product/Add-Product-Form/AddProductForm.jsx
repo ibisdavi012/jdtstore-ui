@@ -218,6 +218,7 @@ function AddProductForm(props) {
         </select>
       </div>
       <DynamicFieldGroup visible={state.type === "dvd"}>
+        <p className="tool-tip">Please provide DVD's size in Mb.</p>
         <FormField
           label="Size (Mb)"
           id="size"
@@ -230,6 +231,7 @@ function AddProductForm(props) {
         />
       </DynamicFieldGroup>
       <DynamicFieldGroup visible={state.type === "book"}>
+        <p className="tool-tip">Please provide Book's weight in Kg.</p>
         <FormField
           label="Weight (Kg)"
           id="weight"
@@ -242,6 +244,7 @@ function AddProductForm(props) {
         />
       </DynamicFieldGroup>
       <DynamicFieldGroup visible={state.type === "furniture"}>
+        <p className="tool-tip">Please provide furniture's dimensions in cm.</p>
         <FormField
           label="Height (cm)"
           id="height"
