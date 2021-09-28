@@ -2,8 +2,9 @@ import axios from "axios";
 import { FaTrashAlt } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { mass_delete } from "../product-list/productListSlice";
+import { config } from "../../config";
 
-const productsEndPoint = "http://localhost/products";
+const productsEndPoint = config.endpoints.products;
 
 export default function MassDeleteButton() {
   const dispatch = useDispatch();

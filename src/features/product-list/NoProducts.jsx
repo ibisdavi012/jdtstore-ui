@@ -1,7 +1,7 @@
 import { FaRegFrown } from "react-icons/fa";
 import "./no-products.scss";
 
-export default function NoProducts() {
+export default function NoProducts({ message }) {
   return (
     <div className="no-products">
       <p className="sad-face">
@@ -9,9 +9,13 @@ export default function NoProducts() {
       </p>
       <p className="message">
         <span className="oops">Ooops!</span>
-        It seems there a no products to display or somethig went wrong. Please,
-        come back later and try again...
+        {message}
       </p>
     </div>
   );
 }
+
+NoProducts.defaultProps = {
+  message:
+    "It seems there are no products to display. Please, try to ADD a product first and try again...",
+};
