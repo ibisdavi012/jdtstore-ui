@@ -1,4 +1,5 @@
 import PageActions from "./PageActions";
+
 import "./header.scss";
 
 function Header(props) {

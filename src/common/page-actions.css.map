@@ -1,9 +1,0 @@
-{
-    "version": 3,
-    "mappings": "AAAA,AAAA,aAAa,AAAC,CACZ,OAAO,CAAE,IAAI,CACb,cAAc,CAAE,MAAM,CAKvB,AAHC,MAAM,CAAC,MAAM,MAAM,SAAS,EAAE,KAAK,EAJrC,AAAA,aAAa,AAAC,CAKV,cAAc,CAAE,GAAG,CAEtB",
-    "sources": [
-        "page-actions.scss"
-    ],
-    "names": [],
-    "file": "page-actions.css"
-}

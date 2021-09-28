@@ -3,14 +3,14 @@ import { useSelector, useDispatch } from "react-redux";
 import { withRouter } from "react-router-dom";
 import axios from "axios";
 import FormField from "./FormField";
-
-import { reset, abort, saved } from "../addProductSlice";
-
-import "./add-product-form.scss";
 import DynamicFieldGroup from "./DynamicFieldGroup";
 import FormError from "./FormError";
+import { reset, abort, saved } from "../addProductSlice";
+import { config } from "../../../config";
 
-const productEndpoint = "http://localhost/products";
+import "./add-product-form.scss";
+
+const productEndpoint = config.endpoints.products;
 
 function AddProductForm(props) {
   const initialState = {
@@ -35,11 +35,51 @@ function AddProductForm(props) {
 
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (formStatus === "CANCEL") {
-      dispatch(reset());
-      props.history.push("/");
+  const changeType = (newSelectedType = "dvd") => {
+    if (newSelectedType === selectedType.current) {
+      return;
     }
+
+    switch (newSelectedType) {
+      case "dvd":
+        setState({ ...state, specifics: { size: 0 } });
+        break;
+      case "book":
+        setState({ ...state, specifics: { weight: 0 } });
+        break;
+      case "furniture":
+        setState({ ...state, specifics: { height: 0, width: 0, length: 0 } });
+        break;
+      default:
+        setState(initialState);
+    }
+
+    selectedType.current = newSelectedType;
+
+    const inputs = document.querySelectorAll(`input`);
+
+    const newErrors = [];
+
+    inputs.forEach(({ value, id, attributes }) => {
+      const isRequired =
+        attributes["data-category"].value === newSelectedType ||
+        attributes["data-category"].value === "default";
+
+      // Field is required and Empty
+      const case1 = isRequired && value === "";
+
+      // It's already included in the Form Error List, and is required
+      const case2 = errors.includes(id) && isRequired;
+
+      if (case1 || case2) {
+        newErrors.push(id);
+      }
+    });
+    setState({
+      ...state,
+      type: newSelectedType || "dvd",
+    });
+    setErrors([...newErrors]);
 
     setTimeout(() => {
       [...document.getElementsByClassName("dynamic-field")].forEach(
@@ -52,53 +92,15 @@ function AddProductForm(props) {
         }
       );
     }, 500);
+  };
 
-    if (state.type !== selectedType.current) {
-      switch (state.type) {
-        case "dvd":
-          setState({ ...state, specifics: { size: 0 } });
-          break;
-        case "book":
-          setState({ ...state, specifics: { weight: 0 } });
-          break;
-        case "furniture":
-          setState({ ...state, specifics: { height: 0, width: 0, length: 0 } });
-          break;
-        default:
-          setState(initialState);
-      }
+  const saveForm = () => {
+    setDisplayFormError(true);
 
-      selectedType.current = state.type;
-
-      const inputs = document.querySelectorAll(`input`);
-
-      const newErrors = [];
-
-      inputs.forEach(({ value, id, attributes }) => {
-        if (!errors.includes(id)) {
-          if (
-            (attributes["data-category"].value === state.type ||
-              attributes["data-category"].value === "default") &&
-            value === ""
-          ) {
-            newErrors.push(id);
-          }
-        } else {
-          if (
-            attributes["data-category"].value === state.type ||
-            attributes["data-category"].value === "default"
-          ) {
-            newErrors.push(id);
-          }
-        }
-      });
-
-      setErrors([...newErrors]);
-    }
-
-    if (formStatus === "SAVE_REQUEST") {
-      setDisplayFormError(true);
-
+    if (errors.length) {
+      window.scroll(0, 0);
+      dispatch(abort());
+    } else {
       const productDescription = {
         sku: state.sku,
         name: state.name,
@@ -106,27 +108,34 @@ function AddProductForm(props) {
         type: state.type,
         ...state.specifics,
       };
+      axios
+        .post(productEndpoint, productDescription)
+        .then((response) => {
+          dispatch(saved());
+          props.history.push("/");
+        })
+        .catch((error) => {
+          setErrorSaving(true);
+          dispatch(abort());
+        });
+    }
+  };
 
-      console.log(productDescription);
+  useEffect(() => {
+    changeType(state.type);
 
-      if (errors.length) {
-        dispatch(abort());
-      } else {
-        axios
-          .post(productEndpoint, productDescription)
-          .then((response) => {
-            dispatch(saved());
-            props.history.push("/");
-          })
-          .catch((error) => {
-            setErrorSaving(true);
-            dispatch(abort());
-          });
-      }
+    if (formStatus === "SAVE_REQUEST") {
+      saveForm();
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state.type, formStatus, errorSaving]);
+  }, [formStatus]);
+
+  if (formStatus === "CANCEL") {
+    dispatch(reset());
+    props.history.push("/");
+    return <></>;
+  }
 
   const onChange = (target) => {
     if (state.hasOwnProperty(target.id)) {
@@ -158,7 +167,7 @@ function AddProductForm(props) {
     <form id="product_form" autoComplete="off">
       <FormError
         visible={errors.length > 0 && displayFormError}
-        message="You must fill the requested fields in order to proceed."
+        message="You must fill in the requested fields in order to proceed."
       />
       <FormError
         visible={errorSaving && displayFormError}
@@ -202,7 +211,7 @@ function AddProductForm(props) {
         <select
           id="productType"
           onChange={(e) => {
-            setState({ ...state, type: e.target.value || "dvd" });
+            changeType(e.target.value);
           }}
           value={state.type}
         >

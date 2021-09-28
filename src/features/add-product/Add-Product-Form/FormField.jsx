@@ -1,5 +1,4 @@
-import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useState } from "react";
 import { sku, units, text, usd } from "./form-validation";
 export default function FormField({
   label,

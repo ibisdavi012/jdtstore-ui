@@ -1,4 +1,3 @@
-import { useSelector } from "react-redux";
 import NoProducts from "./NoProducts";
 import Product from "./Product";
 import Loader from "../../common/Loader";
@@ -6,12 +5,12 @@ import Loader from "../../common/Loader";
 import "./product-grid.scss";
 import "./product-details.scss";
 
-export default function ProductGrid({ loading, products }) {
+export default function ProductGrid({ loading, products, firstRender }) {
   if (loading) {
     return <Loader />;
   }
 
-  if (!products || products.length === 0) {
+  if ((!products || products.length === 0) && !firstRender) {
     return <NoProducts />;
   }
 
@@ -23,3 +22,5 @@ export default function ProductGrid({ loading, products }) {
     </div>
   );
 }
+
+ProductGrid.defaultProps = { firstRender: false };

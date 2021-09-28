@@ -61,7 +61,7 @@ export function usd(value) {
     return prepareMessage(false, empty);
   }
 
-  const validUsd = new RegExp(/^(\d{1,3}(\,\d{3})*|(\d+))(\.\d{2})?$/);
+  const validUsd = new RegExp(/^(\d{1,3}(,\d{3})*|(\d+))(\.\d{2})?$/);
 
   if (!validUsd.test(value)) {
     return prepareMessage(
