@@ -52,7 +52,7 @@ export default function ProductListPage() {
 
   useEffect(() => {
     axios
-      .get(productEndpoint)
+      .get(productEndpoint,{ withCredentials: true })
       .then((result) => {
         if (!result.data.affected_rows) {
           noProductsCondition();
