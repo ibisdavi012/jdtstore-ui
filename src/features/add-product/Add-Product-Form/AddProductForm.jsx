@@ -113,7 +113,7 @@ function AddProductForm(props) {
     };
 
     // Send the JSON using FETCH
-    fetch(productEndpoint, { method: 'POST', body: productDescription })
+    fetch(productEndpoint, { method: 'POST', body: JSON.stringify(productDescription) })
       .then((response) => {
         if (response.ok) {
           dispatch(saved());
