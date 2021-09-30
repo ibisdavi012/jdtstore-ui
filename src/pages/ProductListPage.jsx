@@ -61,9 +61,6 @@ export default function ProductListPage() {
         }
       })
       .catch((error) => {
-        fetch(procductEndpoint, {method: 'GET'}).then((result => result.json()));
-         
-       }).catch(error => {});
         setState({ ...state, loading: false, noProducts: false, error: true });
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
