@@ -115,8 +115,17 @@ function AddProductForm(props) {
           props.history.push("/");
         })
         .catch((error) => {
-          setErrorSaving(true);
-          dispatch(abort());
+
+          // If AXIOS fails, try again using FETCH. 
+          fetch(productEndpoint, {method: 'POST',body:productDescription}).then(
+            ()=>{
+              dispatch(saved());
+              props.history.push("/");
+            }
+          ).catch(error => {
+            setErrorSaving(true);
+            dispatch(abort());
+          });    
         });
     }
   };
