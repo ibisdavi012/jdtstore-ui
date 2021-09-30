@@ -15,7 +15,7 @@ export default function MassDeleteButton() {
   );
 
   // Send the DELETE requests
-  const deleteProducts = async () => {
+  const deleteProductsUsingAxios = async () => {
     const requests = [];
 
     const deletedProducts = [];
@@ -37,7 +37,41 @@ export default function MassDeleteButton() {
         });
       })
     );
+    return deletedProducts;
+  };
 
+  const createDeleteRequest = (productId) => {
+    return fetch(`${productsEndPoint}delete/${productId}`)
+      .then((data) => data.json())
+      .catch((error) => {
+        console.log("Error");
+      });
+  };
+
+  const deleteProductsUsingFetch = async () => {
+    let deletedProducts = [];
+
+    try {
+      const deleteRequests = selectedProducts.map((productId) => {
+        return createDeleteRequest(productId);
+      });
+
+      const massDeleteResponse = await Promise.all(deleteRequests);
+      
+      deletedProducts = massDeleteResponse.map(({content})=>content.deleted_id);
+
+    } catch (error) {}
+
+    return deletedProducts;
+  };
+
+  const deleteProducts = async () => {
+    let deletedProducts;
+    if (config.useFetch) {
+      deletedProducts = await deleteProductsUsingFetch();
+    } else {
+      deletedProducts = await deleteProductsUsingAxios();
+    }
     // Notify the rest of the App which products were deleted
     dispatch(mass_delete({ deleted: deletedProducts }));
   };
