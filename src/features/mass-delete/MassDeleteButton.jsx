@@ -52,13 +52,14 @@ export default function MassDeleteButton() {
     let deletedProducts = [];
 
     try {
+      console.log(selectedProducts);
       const deleteRequests = selectedProducts.map((productId) => {
         return createDeleteRequest(productId);
       });
 
       const massDeleteResponse = await Promise.all(deleteRequests);
       
-      deletedProducts = massDeleteResponse.map(({content})=>content.deleted_id);
+      deletedProducts = massDeleteResponse.map(({content})=>parseInt(content.deleted_id));
 
     } catch (error) {}
 

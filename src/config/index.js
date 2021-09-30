@@ -2,8 +2,6 @@ export const config = {
   loader: false,
   useFetch: true,
   endpoints: {
-    products: 'http://localhost/products/'
+    products: 'https://jdtstore.000webhostapp.com/products'
   },
 };
-
-//"https://jdtstore.000webhostapp.com/products",

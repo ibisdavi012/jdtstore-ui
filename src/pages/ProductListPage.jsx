@@ -21,7 +21,7 @@ export default function ProductListPage() {
   const products = useSelector(
     (state) => state.productList.product_list.products
   );
-
+console.log(products.length);
   const dispatch = useDispatch();
 
   const noProductsCondition = () => {
