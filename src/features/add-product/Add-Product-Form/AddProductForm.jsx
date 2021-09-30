@@ -117,11 +117,16 @@ function AddProductForm(props) {
         .catch((error) => {
 
           // If AXIOS fails, try again using FETCH. 
-          fetch(productEndpoint, {method: 'POST',body:productDescription}).then(
-            ()=>{
-              dispatch(saved());
-              props.history.push("/");
-            }
+          fetch(productEndpoint, {method: 'POST',body:productDescription})
+            .then(function(response) {
+              if(response.ok) {
+                dispatch(saved());
+                props.history.push("/");
+              } else {
+                setErrorSaving(true);
+                dispatch(abort());
+              }   
+            }        
           ).catch(error => {
             setErrorSaving(true);
             dispatch(abort());
