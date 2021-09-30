@@ -41,7 +41,7 @@ export default function MassDeleteButton() {
   };
 
   const createDeleteRequest = (productId) => {
-    return fetch(`${productsEndPoint}delete/${productId}`)
+    return fetch(`${productsEndPoint}/delete/${productId}`)
       .then((data) => data.json())
       .catch((error) => {
         console.log("Error");
