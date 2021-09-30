@@ -24,5 +24,6 @@ Allows to disable/enable loader and setting the endpoint.
     };
 
 ## Live version
-There is a live version of the full project. The Frontend is hosted at Netlify, and the backend at 000webhost.
-[See Live version hosted at Netlify](https://frosty-darwin-651925.netlify.app/)
+There is a live version of the full project. 
+- The [Frontend](https://frosty-darwin-651925.netlify.app/) is hosted at Netlify. 
+- [Backend](https://jdtstore.000webhostapp.com/) hosted at 000webhost.
