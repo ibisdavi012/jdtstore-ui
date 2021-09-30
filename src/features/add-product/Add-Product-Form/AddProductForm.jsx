@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { withRouter } from "react-router-dom";
-import axios from "axios";
 import FormField from "./FormField";
 import DynamicFieldGroup from "./DynamicFieldGroup";
 import FormError from "./FormError";
@@ -108,16 +107,7 @@ function AddProductForm(props) {
         type: state.type,
         ...state.specifics,
       };
-      axios
-        .post(productEndpoint, productDescription)
-        .then((response) => {
-          dispatch(saved());
-          props.history.push("/");
-        })
-        .catch((error) => {
-
-          // If AXIOS fails, try again using FETCH. 
-          fetch(productEndpoint, {method: 'POST',body:productDescription})
+      fetch(productEndpoint, {method: 'POST',body:productDescription})
             .then(function(response) {
               if(response.ok) {
                 dispatch(saved());
@@ -130,8 +120,7 @@ function AddProductForm(props) {
           ).catch(error => {
             setErrorSaving(true);
             dispatch(abort());
-          });    
-        });
+          });
     }
   };
 
