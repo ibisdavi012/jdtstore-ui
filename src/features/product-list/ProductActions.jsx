@@ -8,7 +8,7 @@ export default function ProductActions({ productId }) {
   const dispatch = useDispatch();
 
   const toggleChecked = () => {
-    dispatch(select({ productId: productId, checked: !checked }));
+    dispatch(select({ productId: parseInt(productId), checked: !checked }));
     setChecked(!checked);
   };
 
