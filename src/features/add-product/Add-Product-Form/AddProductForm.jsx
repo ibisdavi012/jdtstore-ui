@@ -96,32 +96,38 @@ function AddProductForm(props) {
   const saveForm = () => {
     setDisplayFormError(true);
 
+    // Abort the saving process if there are errors
     if (errors.length) {
       window.scroll(0, 0);
       dispatch(abort());
-    } else {
-      const productDescription = {
-        sku: state.sku,
-        name: state.name,
-        price: parseFloat(state.price.replace(",", "")),
-        type: state.type,
-        ...state.specifics,
-      };
-      fetch(productEndpoint, {method: 'POST',body:productDescription})
-            .then(function(response) {
-              if(response.ok) {
-                dispatch(saved());
-                props.history.push("/");
-              } else {
-                setErrorSaving(true);
-                dispatch(abort());
-              }   
-            }        
-          ).catch(error => {
-            setErrorSaving(true);
-            dispatch(abort());
-          });
+      return false;
     }
+
+    // Construct the JSON object that will be send to the server
+    const productDescription = {
+      sku: state.sku,
+      name: state.name,
+      price: parseFloat(state.price.replace(",", "")),
+      type: state.type,
+      ...state.specifics,
+    };
+
+    // Send the JSON using FETCH
+    fetch(productEndpoint, { method: 'POST', body: productDescription })
+      .then((response) => {
+        if (response.ok) {
+          dispatch(saved());
+          props.history.push("/");
+        } else {
+          setErrorSaving(true);
+          dispatch(abort());
+        }
+      }
+      ).catch(error => {
+        setErrorSaving(true);
+        dispatch(abort());
+      });
+
   };
 
   useEffect(() => {
