@@ -32,5 +32,3 @@ export default function ProductGrid({ loading, products, noProducts, error }) {
 
   return <div></div>;
 }
-
-ProductGrid.defaultProps = { firstRender: false };
