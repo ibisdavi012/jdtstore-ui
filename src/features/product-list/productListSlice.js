@@ -37,7 +37,7 @@ export const productList = createSlice({
           if (action.payload.deleted.includes(product.id)) {
             state.product_list.selected = state.product_list.selected.filter(
               (selectedProduct) => {
-                return !selectedProduct === product.id;
+                return selectedProduct !== product.id;
               }
             );
             return false;

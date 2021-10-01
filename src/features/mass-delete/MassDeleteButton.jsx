@@ -51,8 +51,7 @@ export default function MassDeleteButton() {
   const deleteProductsUsingFetch = async () => {
     let deletedProducts = [];
 
-    try {
-      console.log(selectedProducts);
+    try {      
       const deleteRequests = selectedProducts.map((productId) => {
         return createDeleteRequest(productId);
       });
