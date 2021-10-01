@@ -9,7 +9,7 @@ export default function AddProductActions() {
       <Link to="/add-product">
         <button id="add-product-btn">
           <FaPlus />
-          Add
+          ADD
         </button>
       </Link>
       <MassDeleteButton />
