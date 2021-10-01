@@ -60,7 +60,9 @@ export default function MassDeleteButton() {
       
       deletedProducts = massDeleteResponse.map(({content})=>parseInt(content.deleted_id));
 
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
 
     return deletedProducts;
   };
@@ -73,7 +75,7 @@ export default function MassDeleteButton() {
       deletedProducts = await deleteProductsUsingAxios();
     }
     // Notify the rest of the App which products were deleted
-    dispatch(mass_delete({ deleted: deletedProducts }));
+    dispatch(mass_delete({ deleted: [...deletedProducts] }));
   };
 
   return (
