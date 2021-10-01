@@ -81,7 +81,7 @@ export default function MassDeleteButton() {
   return (
     <button id="delete-product-btn" onClick={() => deleteProducts()}>
       <FaTrashAlt />
-      Mass Delete
+      MASS DELETE
     </button>
   );
 }

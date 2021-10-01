@@ -5,22 +5,14 @@ export const productList = createSlice({
   initialState: { product_list: { products: [], selected: [] } },
   reducers: {
     load: (state, action) => {
-      state = { ...state };
       state.product_list.products = action.payload.products;
     },
-    select: (state, action) => {
-      state = { ...state };
-      state.product_list.products = [...state.product_list.products];
-      state.product_list.selected = [...state.product_list.selected];
-
+    select: (state, action) => {    
       if (
         action.payload.checked &&
         !state.product_list.selected.includes(action.payload.productId)
       ) {
-        state.product_list.selected = [
-          ...state.product_list.selected,
-          action.payload.productId,
-        ];
+        state.product_list.selected.push(action.payload.productId);
       } else {
         state.product_list.selected = state.product_list.selected.filter(
           (productId) => {
