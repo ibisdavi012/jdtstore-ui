@@ -1,11 +1,12 @@
 footer {
-  position: sticky;
+  position: fixed;
+  width:90%;
   bottom: 0;
   background-color: white;
 
   .copyright {
     text-align: center;
-    padding: 1.6rem;
+    padding: 2rem;
     font-size: 1.4rem;
   }
 }
