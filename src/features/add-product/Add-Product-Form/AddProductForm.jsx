@@ -55,6 +55,10 @@ function AddProductForm(props) {
 
     selectedType.current = newSelectedType;
 
+    validateForm(newSelectedType);
+  };
+
+  const validateForm = (newSelectedType) => {
     const inputs = document.querySelectorAll(`input`);
 
     const newErrors = [];
@@ -79,19 +83,17 @@ function AddProductForm(props) {
       type: newSelectedType || "dvd",
     });
     setErrors([...newErrors]);
+  }
 
-    setTimeout(() => {
-      [...document.getElementsByClassName("dynamic-field")].forEach(
-        (dynamicField) => {
-          dynamicField.style.display = dynamicField.classList.contains(
-            "visible"
-          )
-            ? "block"
-            : "none";
-        }
-      );
-    }, 500);
-  };
+  const getJsonFromFields = () => {
+    return JSON.stringify({
+      sku: state.sku,
+      name: state.name,
+      price: parseFloat(state.price.replace(",", "")),
+      type: state.type,
+      ...state.specifics,
+    });
+  }
 
   const saveForm = () => {
     setDisplayFormError(true);
@@ -104,16 +106,13 @@ function AddProductForm(props) {
     }
 
     // Construct the JSON object that will be send to the server
-    const productDescription = {
-      sku: state.sku,
-      name: state.name,
-      price: parseFloat(state.price.replace(",", "")),
-      type: state.type,
-      ...state.specifics,
-    };
+    const productDescription = getJsonFromFields();
 
     // Send the JSON using FETCH
-    fetch(productEndpoint, { method: 'POST', body: JSON.stringify(productDescription) })
+    fetch(productEndpoint, {
+      method: "POST",
+      body: productDescription,
+    })
       .then((response) => {
         if (response.ok) {
           dispatch(saved());
@@ -122,12 +121,11 @@ function AddProductForm(props) {
           setErrorSaving(true);
           dispatch(abort());
         }
-      }
-      ).catch(error => {
+      })
+      .catch((error) => {
         setErrorSaving(true);
         dispatch(abort());
       });
-
   };
 
   useEffect(() => {
@@ -161,8 +159,14 @@ function AddProductForm(props) {
   };
 
   const reportError = (id, error) => {
-    if (error) {
-      if (!errors.includes(id)) {
+    const input = document.getElementById(id);
+
+    const category = input.attributes['data-category'].value;
+
+    const requiredField = (category === 'default' || category === state.type);
+    
+    if (error && requiredField) {
+      if (!errors.includes(id)) {                
         setErrors([...errors, id]);
       }
     } else {
