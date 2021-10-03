@@ -6,8 +6,19 @@ This is a minimal frontend project build in React as the UI for the project [Che
 
 It basically display all the products available in the table eav_products. Then, the user is able to ADD new products and also delete them massively (selectively).
 
+## Features
+- Fetch all products. 
+- In case there are no products or the connection fails, it will display a message.
+- Disable/enable loader using configuration file.
+- Disables input while processing the form.
+- Displays error messages if fields are not properly input.
+- Shows a message if there was an error trying to process the form.
+- Shows a different style for selected products.
+
 ## About the design
-It's very simple, no UI frameworks were used. HTML, CSS, and Javascript was manually coded.
+- Fixed Header and Footer.
+- Products are displayed in a grid.
+- no UI frameworks were used. 
 
 ## Loader
 
