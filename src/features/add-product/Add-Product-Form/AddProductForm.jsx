@@ -179,12 +179,14 @@ function AddProductForm(props) {
 
   return (
     <form id="product_form" autoComplete="off">
+      {formStatus !== 'STAND_BY' ? <p className="wait-message">Please, wait...</p> : ''}
+      <fieldset disabled={formStatus !== 'STAND_BY'}>
       <FormError
-        visible={errors.length > 0 && displayFormError}
+        visible={errors.length > 0 && displayFormError && formStatus === 'STAND_BY'}
         message="You must fill in the requested fields in order to proceed."
       />
       <FormError
-        visible={errorSaving && displayFormError}
+        visible={errorSaving && displayFormError && formStatus === 'STAND_BY'}
         message="This form could not be saved. Please, check you internet connection,
           the input fields and then try again."
       />
@@ -300,6 +302,7 @@ function AddProductForm(props) {
           reportError={reportError}
         />
       </DynamicFieldGroup>
+      </fieldset>
     </form>
   );
 }
