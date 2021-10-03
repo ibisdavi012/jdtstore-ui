@@ -9,15 +9,19 @@ html {
 }
 
 body {
-  padding:5%;
+  padding: 0 5%;
   min-width: 200px;
   font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
     "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
 }
 
-main {
-  min-height: 70vh;
-  margin-top:7rem;
+::-webkit-scrollbar {
+  background-color: rgb(185, 182, 182);
+  width:1rem;
+}
+
+::-webkit-scrollbar-thumb{
+  background-color: black;
 }
 
 hr {
@@ -40,6 +44,11 @@ button {
       background-color: white;
       color: black;
     }
+  }
+
+  &[disabled]{
+    color:rgb(129, 128, 128);
+    font-style: italic;
   }
 }
 

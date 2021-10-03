@@ -1,8 +1,9 @@
 footer {
   position: fixed;
+  bottom:0;
   width:90%;
-  bottom: 0;
   background-color: white;
+  max-width: 960px;
 
   .copyright {
     text-align: center;

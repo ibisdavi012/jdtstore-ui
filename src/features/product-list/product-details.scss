@@ -6,7 +6,12 @@
   align-items: center;
   height: 80%;
   text-align: center;
+  
   div {
     padding: 0.2rem 0;
+  }
+
+  .product__sku {
+    text-transform: uppercase;
   }
 }

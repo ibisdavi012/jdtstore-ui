@@ -1,11 +1,9 @@
 header {
-  position: fixed;
-  top: 0;
-  width:90%;
+  position:sticky;
+  top:0;
   background-color: rgb(255, 255, 255);
   z-index: 1;
-  margin-bottom: 0.8rem;
-  padding-top: 3.2rem;
+  padding-top: 3.2rem;  
 }
 
 .header__content {

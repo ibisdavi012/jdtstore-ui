@@ -7,6 +7,7 @@
   position: relative;
   opacity: 0.2;
   animation: productFadeIn 0.5s ease 0s forwards;
+  transition: background-color 0.5s ease, transform 0.5s ease;
 
   .product__actions {
     display: flex;
@@ -20,7 +21,9 @@
   }  
 
   &.selected {
-    background-color: rgba(245, 245, 245,0.7);
+    transform: translateY(-1rem);
+    background-color: rgba(0, 0, 0, 0.719);
+    color:white;
     box-shadow: 2px 2px 5px 5px rgba(33,33,33,0.10);
   }
 }

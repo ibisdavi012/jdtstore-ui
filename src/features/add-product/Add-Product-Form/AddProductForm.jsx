@@ -114,9 +114,9 @@ function AddProductForm(props) {
       body: productDescription,
     })
       .then((response) => {
-        if (response.ok) {
+        if (response.ok) {          
           dispatch(saved());
-          props.history.push("/");
+          props.history.push("/");          
         } else {
           setErrorSaving(true);
           dispatch(abort());
@@ -129,21 +129,22 @@ function AddProductForm(props) {
   };
 
   useEffect(() => {
-    changeType(state.type);
+
+    if (formStatus === "CANCEL") {
+      dispatch(reset());
+      props.history.push("/");
+    }
 
     if (formStatus === "SAVE_REQUEST") {
       saveForm();
+    }else{
+      changeType(state.type);
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formStatus]);
 
-  if (formStatus === "CANCEL") {
-    dispatch(reset());
-    props.history.push("/");
-    return <></>;
-  }
-
+  
   const onChange = (target) => {
     if (state.hasOwnProperty(target.id)) {
       setState({ ...state, [target.id]: target.value });
