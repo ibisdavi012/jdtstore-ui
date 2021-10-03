@@ -2,12 +2,13 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { select } from "./productListSlice";
 
-export default function ProductActions({ productId }) {
+export default function ProductActions({ productId, onCheckChanged }) {
   const [checked, setChecked] = useState(false);
 
   const dispatch = useDispatch();
 
-  const toggleChecked = () => {
+  const toggleChecked = (e) => {
+    onCheckChanged(!checked);
     dispatch(select({ productId: parseInt(productId), checked: !checked }));
     setChecked(!checked);
   };
@@ -19,7 +20,7 @@ export default function ProductActions({ productId }) {
         name=""
         id=""
         className="delete-checkbox"
-        onChange={(e) => toggleChecked()}
+        onChange={(e) => toggleChecked(e)}
         checked={checked}
       />
     </div>

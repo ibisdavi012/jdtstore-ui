@@ -78,8 +78,10 @@ export default function MassDeleteButton() {
     dispatch(mass_delete({ deleted: [...deletedProducts] }));
   };
 
+  const formStatus = useSelector((state) => state.addProduct.formStatus);
+
   return (
-    <button id="delete-product-btn" onClick={() => deleteProducts()}>
+    <button id="delete-product-btn" onClick={() => deleteProducts()} disabled={formStatus !== 'STAND_BY'}>
       <FaTrashAlt />
       MASS DELETE
     </button>
