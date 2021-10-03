@@ -14,11 +14,13 @@ It basically display all the products available in the table eav_products. Then,
 - Displays error messages if fields are not properly input.
 - Shows a message if there was an error trying to process the form.
 - Shows a different style for selected products.
+- Shows progress while sending the form (It can be enabled/disabled in the configuration file).
 
 ## About the design
+- SPA using React
 - Fixed Header and Footer.
 - Products are displayed in a grid.
-- no UI frameworks were used. 
+- No UI frameworks were used. 
 
 ## Loader
 

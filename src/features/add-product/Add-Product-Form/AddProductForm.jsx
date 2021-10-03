@@ -179,7 +179,7 @@ function AddProductForm(props) {
 
   return (
     <form id="product_form" autoComplete="off">
-      {formStatus !== 'STAND_BY' ? <p className="wait-message">Please, wait...</p> : ''}
+      {formStatus !== 'STAND_BY' && config.displayProgress ? <p className="wait-message">Please, wait...</p> : ''}
       <fieldset disabled={formStatus !== 'STAND_BY'}>
       <FormError
         visible={errors.length > 0 && displayFormError && formStatus === 'STAND_BY'}
