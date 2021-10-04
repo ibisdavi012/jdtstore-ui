@@ -3,6 +3,6 @@ export const config = {
   displayProgress: true,
   useFetch: true,
   endpoints: {
-    products: 'https://jdtstore.000webhostapp.com/products'
+    products: 'http://ibisdavi012-001-site1.itempurl.com/products'
   },
 };
