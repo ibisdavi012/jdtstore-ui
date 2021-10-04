@@ -19,7 +19,7 @@ export default function ProductListPage() {
   });
 
   const products = useSelector(
-    (state) => state.productList.product_list.products
+    (state) => state.productList.products
   );
   const dispatch = useDispatch();
 

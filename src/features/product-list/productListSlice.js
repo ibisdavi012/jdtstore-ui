@@ -2,25 +2,16 @@ import { createSlice } from "@reduxjs/toolkit";
 
 export const productList = createSlice({
   name: "productList",
-  initialState: { product_list: { products: [], selected: [] } },
+  initialState: {  products: []  },
   reducers: {
     load: (state, action) => {
-      state.product_list.products = action.payload.products;
+      state.products = action.payload.products;
     },
 
     mass_delete: (state, action) => {
-      state.product_list.products = state.product_list.products.filter(
+      state.products = state.products.filter(
         (product) => {
-          if (action.payload.deleted.includes(product.id)) {
-            state.product_list.selected = state.product_list.selected.filter(
-              (selectedProduct) => {
-                return selectedProduct !== product.id;
-              }
-            );
-            return false;
-          } else {
-            return true;
-          }
+          return (!action.payload.deleted.includes(product.id));                        
         }
       );
     },
