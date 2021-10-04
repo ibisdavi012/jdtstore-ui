@@ -10,12 +10,12 @@ export default function MassDeleteButton() {
   const dispatch = useDispatch();
 
   // Get the list of selected products
-  const selectedProducts = useSelector(
-    (state) => state.productList.product_list.selected
-  );
+  const getSelectedProducts = () => {
+    return [...document.querySelectorAll(':checked')].map(checkbox => parseInt(checkbox.attributes['data-product'].value));    
+  }
 
   // Send the DELETE requests
-  const deleteProductsUsingAxios = async () => {
+  const deleteProductsUsingAxios = async (selectedProducts) => {
     const requests = [];
 
     const deletedProducts = [];
@@ -48,7 +48,7 @@ export default function MassDeleteButton() {
       });
   };
 
-  const deleteProductsUsingFetch = async () => {
+  const deleteProductsUsingFetch = async (selectedProducts) => {
     let deletedProducts = [];
 
     try {      
@@ -68,11 +68,13 @@ export default function MassDeleteButton() {
   };
 
   const deleteProducts = async () => {
+    const selectedProducts = getSelectedProducts();
+
     let deletedProducts;
     if (config.useFetch) {
-      deletedProducts = await deleteProductsUsingFetch();
+      deletedProducts = await deleteProductsUsingFetch(selectedProducts);
     } else {
-      deletedProducts = await deleteProductsUsingAxios();
+      deletedProducts = await deleteProductsUsingAxios(selectedProducts);
     }
     // Notify the rest of the App which products were deleted
     dispatch(mass_delete({ deleted: [...deletedProducts] }));

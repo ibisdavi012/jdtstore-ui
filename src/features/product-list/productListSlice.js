@@ -7,22 +7,7 @@ export const productList = createSlice({
     load: (state, action) => {
       state.product_list.products = action.payload.products;
     },
-    select: (state, action) => {    
-      if (
-        action.payload.checked &&
-        !state.product_list.selected.includes(action.payload.productId)
-      ) {
-        state.product_list.selected.push(action.payload.productId);
-      } else {
-        state.product_list.selected = state.product_list.selected.filter(
-          (productId) => {
-            return (
-              productId !== action.payload.productId && !action.payload.checked
-            );
-          }
-        );
-      }
-    },
+
     mass_delete: (state, action) => {
       state.product_list.products = state.product_list.products.filter(
         (product) => {
@@ -42,5 +27,5 @@ export const productList = createSlice({
   },
 });
 
-export const { load, select, mass_delete } = productList.actions;
+export const { load, mass_delete } = productList.actions;
 export default productList.reducer;
