@@ -1,10 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
-import addProduct from "../features/add-product/addProductSlice.js";
+import productManagement from "./productManagementSlice";
 import productList from "../features/product-list/productListSlice";
 
 export default configureStore({
   reducer: {
-    addProduct: addProduct,
+    productManagement: productManagement,
     productList: productList,
   },
 });

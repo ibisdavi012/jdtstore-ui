@@ -2,6 +2,8 @@ import axios from "axios";
 import { FaTrashAlt } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { mass_delete } from "../product-list/productListSlice";
+import {delete_request,reset} from '../../store/productManagementSlice';
+
 import { config } from "../../config";
 
 const productsEndPoint = config.endpoints.products;
@@ -71,6 +73,9 @@ export default function MassDeleteButton() {
     const selectedProducts = getSelectedProducts();
 
     let deletedProducts;
+
+    dispatch(delete_request());
+
     if (config.useFetch) {
       deletedProducts = await deleteProductsUsingFetch(selectedProducts);
     } else {
@@ -78,12 +83,13 @@ export default function MassDeleteButton() {
     }
     // Notify the rest of the App which products were deleted
     dispatch(mass_delete({ deleted: [...deletedProducts] }));
+    dispatch(reset());
   };
 
-  const formStatus = useSelector((state) => state.addProduct.formStatus);
+  const appStatus = useSelector((state) => state.productManagement.appStatus);
 
   return (
-    <button id="delete-product-btn" onClick={() => deleteProducts()} disabled={formStatus !== 'STAND_BY'}>
+    <button id="delete-product-btn" onClick={() => deleteProducts()} disabled={appStatus !== 'STAND_BY'}>
       <FaTrashAlt />
       MASS DELETE
     </button>

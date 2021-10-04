@@ -4,7 +4,7 @@ import { withRouter } from "react-router-dom";
 import FormField from "./FormField";
 import DynamicFieldGroup from "./DynamicFieldGroup";
 import FormError from "./FormError";
-import { reset, abort, saved } from "../addProductSlice";
+import { reset, abort, saved } from "../../../store/productManagementSlice";
 import { config } from "../../../config";
 
 import "./add-product-form.scss";
@@ -30,7 +30,7 @@ function AddProductForm(props) {
 
   const [errorSaving, setErrorSaving] = useState(false);
 
-  const formStatus = useSelector((state) => state.addProduct.formStatus);
+  const appStatus = useSelector((state) => state.productManagement.appStatus);
 
   const dispatch = useDispatch();
 
@@ -130,19 +130,19 @@ function AddProductForm(props) {
 
   useEffect(() => {
 
-    if (formStatus === "CANCEL") {
+    if (appStatus === "CANCEL") {
       dispatch(reset());
       props.history.push("/");
     }
 
-    if (formStatus === "SAVE_REQUEST") {
+    if (appStatus === "SAVE_REQUEST") {
       saveForm();
     }else{
       changeType(state.type);
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [formStatus]);
+  }, [appStatus]);
 
   
   const onChange = (target) => {
@@ -179,14 +179,14 @@ function AddProductForm(props) {
 
   return (
     <form id="product_form" autoComplete="off">
-      {formStatus !== 'STAND_BY' && config.displayProgress ? <p className="wait-message">Please, wait...</p> : ''}
-      <fieldset disabled={formStatus !== 'STAND_BY'}>
+      {appStatus !== 'STAND_BY' && config.displayProgress ? <p className="wait-message">Please, wait...</p> : ''}
+      <fieldset disabled={appStatus !== 'STAND_BY'}>
       <FormError
-        visible={errors.length > 0 && displayFormError && formStatus === 'STAND_BY'}
+        visible={errors.length > 0 && displayFormError && appStatus === 'STAND_BY'}
         message="You must fill in the requested fields in order to proceed."
       />
       <FormError
-        visible={errorSaving && displayFormError && formStatus === 'STAND_BY'}
+        visible={errorSaving && displayFormError && appStatus === 'STAND_BY'}
         message="This form could not be saved. Please, check you internet connection,
           the input fields and then try again."
       />

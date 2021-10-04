@@ -6,12 +6,12 @@ import MassDeleteButton from "../mass-delete/MassDeleteButton";
 
 export default function AddProductActions() {
 
-  const formStatus = useSelector((state) => state.addProduct.formStatus);
+  const appStatus = useSelector((state) => state.productManagement.appStatus);
 
   return (
     <>
       <Link to="/add-product">
-        <button id="add-product-btn" disabled={formStatus !== 'STAND_BY'}>
+        <button id="add-product-btn" disabled={appStatus !== 'STAND_BY'}>
           <FaPlus />
           ADD
         </button>
