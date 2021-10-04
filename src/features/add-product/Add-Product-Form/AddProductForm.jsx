@@ -113,8 +113,10 @@ function AddProductForm(props) {
       method: "POST",
       body: productDescription,
     })
-      .then((response) => {
-        if (response.ok) {          
+      .then((response) => 
+        response.json()        
+      ).then(json => {        
+        if (json.status === 'OK') {          
           dispatch(saved());
           props.history.push("/");          
         } else {
