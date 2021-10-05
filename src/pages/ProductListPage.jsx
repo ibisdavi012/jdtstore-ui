@@ -70,7 +70,7 @@ export default function ProductListPage() {
 
   return (
     <Page title="Product List">
-      {appStatus !== 'STAND_BY' && config.loader && <MassDeleteProgressBar />}
+      {appStatus !== 'STAND_BY' && config.displayProgress && <MassDeleteProgressBar />}
       <ProductGrid
         noProducts={state.noProducts}
         loading={state.loading}
