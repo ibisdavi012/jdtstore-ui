@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { load } from "../features/product-list/productListSlice";
 import Page from "../common/Page";
 import ProductGrid from "../features/product-list/ProductGrid";
+import MassDeleteProgressBar from "../features/mass-delete/MassDeleteProgressBar";
 import { config } from "../config";
 import "./product-list-page.scss";
 
@@ -65,8 +66,11 @@ export default function ProductListPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const appStatus = useSelector((state) => state.productManagement.appStatus);
+
   return (
     <Page title="Product List">
+      {appStatus !== 'STAND_BY' && config.loader && <MassDeleteProgressBar />}
       <ProductGrid
         noProducts={state.noProducts}
         loading={state.loading}

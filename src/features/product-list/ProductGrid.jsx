@@ -3,7 +3,6 @@ import Product from "./Product";
 import Loader from "../../common/Loader";
 
 import "./product-grid.scss";
-import "./product-details.scss";
 
 export default function ProductGrid({ loading, products, noProducts, error }) {
   if (error) {
