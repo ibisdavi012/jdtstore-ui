@@ -4,7 +4,7 @@ export default function Footer() {
   return (
     <footer>
       <hr />
-      <div className="copyright">Scandiweb Test assignment &copy; 2021</div>
+      <div className="copyright">Scandiweb Test Assignment &copy; 2021</div>
     </footer>
   );
 }
